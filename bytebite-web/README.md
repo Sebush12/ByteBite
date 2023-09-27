@@ -1,4 +1,4 @@
-# @ByteLore
+# @ByteBite
 
 ## Development Setup
 
