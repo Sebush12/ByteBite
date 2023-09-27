@@ -1,0 +1,15 @@
+services:
+  api:
+    build: ./bytebite-api       
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./bytebite-api:/bytebite-api
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+
+  web:
+    build: ./bytebite-web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./bytebite-web:/bytebite-web

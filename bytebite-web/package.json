@@ -6,8 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "run": "next build && next dev",
-    "start": "next start"
+    "start": "next build && next dev"
   },
   "dependencies": {
     "react": "latest",
