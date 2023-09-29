@@ -15,8 +15,8 @@
     "framer-motion": "^10.16.4",
     "graphql": "^16.8.1",
     "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "latest",

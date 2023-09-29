@@ -1,12 +1,14 @@
 FROM node:18.18.0
 
-WORKDIR /bytebite-web
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN command -v yarn || npm i -g yarn
+WORKDIR /bytebite-web
 
 COPY . .
 
-RUN yarn
+RUN yarn install
+
+RUN yarn add -d next@latest
 
 EXPOSE 3000
 
