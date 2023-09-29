@@ -4,12 +4,10 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 WORKDIR /bytebite-web
 
-COPY . .
-
+COPY package.json yarn.lock ./
 RUN yarn install
 
-RUN yarn add -d next@latest
-
 EXPOSE 3000
+ENV PORT 3000
 
 CMD ["yarn", "start"]
