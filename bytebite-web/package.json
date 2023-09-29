@@ -19,13 +19,13 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "latest",
-    "@types/react": "latest",
+    "@types/node": "20.7.1",
+    "@types/react": "18.2.23",
     "@types/react-dom": "latest",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "eslint": "^8.50.0",
     "eslint-config-next": "latest",
-    "typescript": "^5.2.2"
+    "typescript": "5.2.2"
   }
 }

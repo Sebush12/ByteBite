@@ -1,13 +1,18 @@
-FROM node:18.18.0
+FROM node:18.18.0 
 
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+RUN mkdir -p /usr/src/app
+ENV PORT 3000
 
-WORKDIR /bytebite-web
+WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
+
 RUN yarn install
 
+COPY . /usr/src/app
+
+# RUN yarn build
+
 EXPOSE 3000
-ENV PORT 3000
 
 CMD ["yarn", "start"]
