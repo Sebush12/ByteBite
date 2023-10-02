@@ -4,21 +4,28 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
     "lint": "next lint",
-    "start": "next build && next dev"
+    "start": "next dev"
   },
   "dependencies": {
-    "react": "latest",
-    "react-dom": "latest",
-    "next": "latest"
+    "@apollo/client": "^3.8.4",
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^10.16.4",
+    "graphql": "^16.8.1",
+    "next": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/react": "latest",
-    "@types/node": "latest",
+    "@types/node": "20.7.1",
+    "@types/react": "18.2.23",
     "@types/react-dom": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "latest"
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "latest",
+    "typescript": "5.2.2"
   }
 }

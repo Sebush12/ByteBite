@@ -1,10 +1,17 @@
-FROM node:18.18.0
+FROM node:18.18.0 
 
-WORKDIR /bytebite-web
+RUN mkdir -p /usr/src/app
+ENV PORT 3000
 
-COPY . .
+WORKDIR /usr/src/app
 
-RUN yarn
+COPY package.json yarn.lock ./
+
+RUN yarn install
+
+COPY . /usr/src/app
+
+# RUN yarn build
 
 EXPOSE 3000
 

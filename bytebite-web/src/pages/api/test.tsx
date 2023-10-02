@@ -5,7 +5,7 @@ export const Test: FC = () => {
   const [currentDate, setCurrentDate] = useState(null);
   useEffect(() => {
   (async () => {
-    const response = await fetch(' http://127.0.0.1:8000/').then(res => res.json()).then(data => {
+     await fetch(' http://127.0.0.1:8000/').then(res => res.json()).then(data => {
       setCurrentTime(data.time);
       setCurrentDate(data.date)
     });
@@ -15,7 +15,7 @@ export const Test: FC = () => {
   if (currentTime === null || currentDate === null) {
     return  'Loading...';
   }
-  
+
   return (
   <div>
     <header>
@@ -23,8 +23,8 @@ export const Test: FC = () => {
       <h3>API Test:</h3>
       <p>The date is {currentDate} and the time is {currentTime}.</p> <br/>
     </header>
-  </div>    
+  </div>
   );
   }
-  
+
   export default Test;
