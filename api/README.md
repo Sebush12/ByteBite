@@ -1,5 +1,14 @@
 # @ByteBite
 
+## Development
+
+To develop in Django navigate to the `api` folder.
+
+run [command](https://packaging.python.org/en/latest/tutorials/installing-packages/) to activate 
+to activate the virual envirionment
+
+Once the venv is running (and if we have requirements.txt) then use the [command](https://packaging.python.org/en/latest/tutorials/installing-packages/) to install the python dependancies. 
+
 ## Development Setup
 
 When installing the tools needed for development see the [tools section](#tools) to see which versions to use.
@@ -39,4 +48,4 @@ Here is a list of tools used to work on this repository.
 | [Python](https://www.python.org/)      | 3.11.5  |
 | [pip](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)                                                   | 23.2.1  |
 | [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)                                                   | x.x.x |
-```
+
