@@ -49,3 +49,11 @@ Here is a list of tools used to work on this repository.
 | [pip](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)                                                   | 23.2.1  |
 | [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)                                                   | x.x.x |
 
+## Requirements.txt
+
+The requirements.txt file is a text file containing the python dependencies (imports) for the project. To add to it one of 2 things can be done:
+
+1. Delete the file and re-scan entirely with the command : pip freeze > requirements.txt 
+2. Add manually to the end of the text file, ex: Django==4.2.5
+
+Python related errors can then be solved by running the "pip install -r requirements.txt" command, this should download all python dependencies. 
