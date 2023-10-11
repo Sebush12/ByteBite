@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 
 # Create your models here.
+# Django creates an id (primary key) automatically
 class Users(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
@@ -23,3 +24,17 @@ class Users(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Users_info(models.Model):
+    user = models.OneToOneField(
+        Users, related_name="info", on_delete=models.CASCADE, primary_key=True
+    )
+    height = models.IntegerField()
+    start_weight = models.DecimalField(max_digits=5, decimal_places=2)
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    goal_weight = models.DecimalField(max_digits=5, decimal_places=2)
+    weekly_goal = models.IntegerField()
+
+    def __str__(self):
+        return f"Info for {self.user.first_name} {self.user.last_name}"

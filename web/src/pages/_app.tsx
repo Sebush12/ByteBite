@@ -1,21 +1,25 @@
 import '@/styles/globals.css'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
 
-const client = new ApolloClient({
-  uri: 'https://flyby-router-demo.herokuapp.com/',
-  cache: new InMemoryCache(),
+import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
+
+const client = new Client({
+  url: 'http://127.0.0.1:8000/graphql',
+  exchanges: [cacheExchange, fetchExchange],
 });
 
-
+// const client = new ApolloClient({
+//   uri: 'http://127.0.0.1:8000/graphql/',
+//   cache: new InMemoryCache(),
+// });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
+    <Provider value={client}>
       <ChakraProvider>
        <Component {...pageProps} />
       </ChakraProvider>
-    </ApolloProvider>
+    </Provider>
   )
 }
