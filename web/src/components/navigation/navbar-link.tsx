@@ -1,5 +1,5 @@
 import { SelectedPage } from "@/pages/shared/types";
-import { Box, LinkBox, Link } from "@chakra-ui/react";
+import { LinkBox, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 type Props = {
   page: string;
