@@ -1,9 +1,9 @@
 import { FC } from "react";
-import UserList from "./api/users";
+import Dashboard from "@/components/ui/dashboard";
 
 export const App: FC = () => {
   return (
-   <UserList/>
+   <Dashboard/>
   )
 }
 
