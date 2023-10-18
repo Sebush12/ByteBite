@@ -11,6 +11,7 @@ coverage/
 # next.js
 /.next/
 /out/
+api/venv
 
 # production
 build/
@@ -173,3 +174,4 @@ GitHub.sublime-settings/
 !.vscode/launch.json/ 
 !.vscode/extensions.json/ 
 .history/
+api/venv
