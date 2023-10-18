@@ -1,3 +1,4 @@
+import { Footer } from '@/components/navigation/footer';
 import '@/styles/globals.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
@@ -9,16 +10,12 @@ const client = new Client({
   exchanges: [cacheExchange, fetchExchange],
 });
 
-// const client = new ApolloClient({
-//   uri: 'http://127.0.0.1:8000/graphql/',
-//   cache: new InMemoryCache(),
-// });
-
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider value={client}>
       <ChakraProvider>
        <Component {...pageProps} />
+       <Footer/>
       </ChakraProvider>
     </Provider>
   )

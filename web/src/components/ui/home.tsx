@@ -1,20 +1,18 @@
 import {
   Box,
-  Button,
-  HStack,
   Image,
   Text,
   VStack,
   Flex,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { FC, useState } from "react";
-import { Navbar } from "@/components/navbar/navbar";
+import { Navbar } from "@/components/navigation/navbar";
 import { SelectedPage } from "@/pages/shared/types";
 import { RouteButton } from "@/pages/shared/route-button";
 
 export const Home: FC = () => {
-  const route = useRouter();
+  // const route = useRouter();
   const [selectedPage, setSelectedPage] = useState(SelectedPage.Home);
   return (
     <Box bg="darkgreen" minHeight="100vh">
