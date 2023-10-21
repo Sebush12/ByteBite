@@ -10,7 +10,6 @@ class Users(models.Model):
     username = models.CharField(max_length=40)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    name = models.CharField(max_length=40, blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)  # This should be a hashed value!
 

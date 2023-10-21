@@ -1,6 +1,8 @@
+from .mutations import createUser, updateUser
 import graphene
-
+from graphene_django.forms import mutation
 from graphene_django import DjangoObjectType, DjangoListField
+from .forms import UserForm, UserUpdateForm
 from .models import Users, Users_info
 
 
@@ -26,5 +28,7 @@ class Query(graphene.ObjectType):
     def resolve_all_users_info(root, info):
         return Users_info.objects.all()
 
-
-schema = graphene.Schema(query=Query)
+class Mutation(graphene.ObjectType):
+    create_user =createUser.Field()
+    update_user = updateUser.Field()
+schema = graphene.Schema(query=Query, mutation=Mutation)
