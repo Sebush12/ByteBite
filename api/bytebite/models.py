@@ -45,10 +45,10 @@ class Users_info(models.Model):
     
 class FoodItem(models.Model):
     name = models.CharField(max_length=255, primary_key=True)
-    calories = models.PostiveIntegerField()
-    protein = models.PostiveDecimalField(max_digits=5, decimal_places=2)
-    carbs = models.PositiveDecimalField(max_digits=5, decimal_places=2)
-    fat = models.PositiveDecimalField(max_digits=5, decimal_places=2)
+    calories = models.PositiveIntegerField()
+    protein = models.DecimalField(max_digits=5, decimal_places=2)
+    carbs = models.DecimalField(max_digits=5, decimal_places=2)
+    fat = models.DecimalField(max_digits=5, decimal_places=2)
 
 
 class UserFoodLog(models.Model):
