@@ -3,7 +3,7 @@ import graphene
 from graphene_django.forms import mutation
 from graphene_django import DjangoObjectType, DjangoListField
 from .forms import UserForm, UserUpdateForm
-from .models import Users, Users_info
+from .models import Users, Users_info, FoodItem, UserFoodLog
 
 
 class UsersType(DjangoObjectType):
@@ -17,6 +17,15 @@ class Users_InfoType(DjangoObjectType):
         model = Users_info
         fields = "__all__"
 
+class FoodItemType(DjangoObjectType):
+    class Meta:
+        model = FoodItem
+        fields = ("name", "calories", "protein", "carbs", "fat")
+
+class UserFoodLogType(DjangoObjectType):
+    class Meta:
+        model = UserFoodLog
+        fields = ("user", "date", "food_item", "servings")
 
 class Query(graphene.ObjectType):
     all_users = graphene.List(UsersType)
