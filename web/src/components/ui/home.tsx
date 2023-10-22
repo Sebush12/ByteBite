@@ -1,20 +1,22 @@
 import {
   Box,
-  Button,
-  HStack,
   Image,
   Text,
   VStack,
   Flex,
-  Spacer,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  useDisclosure,
+  ModalCloseButton,
+  Button,
+  ModalBody
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { FC, useState } from "react";
-import { Navbar } from "@/components/navbar/navbar";
-import { SelectedPage } from "@/pages/shared/types";
-import { RouteButton } from "@/pages/shared/route-button";
+import { FC } from "react";
+import { SignupForm } from "../forms/signup";
 
 export const Home: FC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
       <Flex
@@ -158,11 +160,25 @@ export const Home: FC = () => {
             </Box>
 
             <VStack pt="3rem">
-              <RouteButton buttonText="Sign Up Now" routingPath={"./signup"} />
+              <Button onClick={onOpen}>Sign Up</Button>
             </VStack>
           </Box>
         </Box>
       </Flex>
+      <Modal
+        isCentered
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset='slideInBottom'
+      >
+        <ModalOverlay />
+        <ModalContent>
+        <ModalCloseButton />
+        <ModalBody>
+          <SignupForm />
+        </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

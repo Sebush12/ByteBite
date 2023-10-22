@@ -1,14 +1,11 @@
 import { useState } from "react";
-import Logo from "@/public/images/pexels-any-lane-5945660.jpg";
 import { SelectedPage } from "@/pages/shared/types";
 import { NavbarLink } from "./navbar-link";
-import { RouteButton } from "@/pages/shared/route-button";
 import { useRouter } from "next/router";
 import {
   Box,
   Flex,
   Avatar,
-  Text,
   Button,
   Menu,
   MenuButton,
@@ -19,8 +16,7 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
-  Center,
-  Spacer,
+  Center
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
@@ -29,26 +25,6 @@ type Props = {
   selectedPage: SelectedPage;
   setSelectedPage: (value: SelectedPage) => void;
   children: React.ReactNode;
-};
-const NavLink = (props: Props) => {
-  const { children } = props;
-
-  return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-      href={"#"}
-    >
-      {children}
-    </Box>
-  );
- 
 };
 
 export const Navbar = ({
@@ -59,7 +35,6 @@ export const Navbar = ({
 
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const flexBetween = "flex items-center justify-between";
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
   const navbarBackground = isTopOfPage ? "" : "drop-shadow";

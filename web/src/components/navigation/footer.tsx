@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Box, Container, Link, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Container, Link, Spacer, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
 export const Footer:FC = () => {
@@ -10,7 +10,9 @@ export const Footer:FC = () => {
       <Container
         as={Stack}
         maxW={'6xl'}
-        py={4}
+        p={2}
+        pl={16}
+        pr={16}
         direction={{ base: 'column', md: 'row' }}
         spacing={4}
         justify={{ base: 'center', md: 'space-between' }}
@@ -26,6 +28,7 @@ export const Footer:FC = () => {
             Dashboard
           </Link>
         </Stack>
+        <Spacer />
         <Text>© 2023 ByteBite Tracker. No rights reserved</Text>
       </Container>
     </Box>

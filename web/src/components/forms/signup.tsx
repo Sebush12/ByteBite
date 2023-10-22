@@ -7,10 +7,9 @@ export const SignupForm: FC = () => {
   const [showPassword, setShowPassword] = useState(false)
   return (
     <Flex
-    minH={'100vh'}
     align={'center'}
     justify={'center'}
-    bg={useColorModeValue('gray.50', 'gray.800')}>
+    >
     <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
       <Stack align={'center'}>
         <Heading fontSize={'4xl'} textAlign={'center'}>
@@ -34,12 +33,16 @@ export const SignupForm: FC = () => {
               </FormControl>
             </Box>
             <Box>
-              <FormControl id="lastName">
+              <FormControl id="lastName" isRequired> 
                 <FormLabel>Last Name</FormLabel>
                 <Input type="text" />
               </FormControl>
             </Box>
           </HStack>
+          <FormControl id="userName" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input type="text" />
+          </FormControl>
           <FormControl id="email" isRequired>
             <FormLabel>Email address</FormLabel>
             <Input type="email" />
