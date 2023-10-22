@@ -3,9 +3,9 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import NextLink from 'next/link'
 import { FC, useState } from "react";
 
-export const SignupForm: FC = () => {
-  const [showPassword, setShowPassword] = useState(false)
-  return (
+export const Login: FC = () => {
+    const [showPassword, setShowPassword] = useState (false);
+    return (
     <Flex
     align={'center'}
     justify={'center'}
@@ -13,10 +13,10 @@ export const SignupForm: FC = () => {
     <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
       <Stack align={'center'}>
         <Heading fontSize={'4xl'} textAlign={'center'}>
-          Sign up
+          Login
         </Heading>
         <Text fontSize={'lg'}>
-          to start reaching your goals
+          to continue reaching your goals
         </Text>
       </Stack>
       <Box
@@ -24,28 +24,10 @@ export const SignupForm: FC = () => {
         bg={useColorModeValue('white', 'gray.700')}
         boxShadow={'lg'}
         p={8}>
-        <Stack spacing={4}>
-          <HStack>
-            <Box>
-              <FormControl id="firstName" isRequired>
-                <FormLabel>First Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl id="lastName" isRequired> 
-                <FormLabel>Last Name</FormLabel>
-                <Input type="text" />
-              </FormControl>
-            </Box>
-          </HStack>
+        <Stack spacing={4}> 
           <FormControl id="userName" isRequired>
             <FormLabel>Username</FormLabel>
             <Input type="text" />
-          </FormControl>
-          <FormControl id="email" isRequired>
-            <FormLabel>Email address</FormLabel>
-            <Input type="email" />
           </FormControl>
           <FormControl id="password" isRequired>
             <FormLabel>Password</FormLabel>
@@ -69,17 +51,18 @@ export const SignupForm: FC = () => {
               _hover={{
                 bg: 'blue.500',
               }}>
-              Sign up
+              Login
             </Button>
           </Stack>
           <Stack pt={6}>
             <Text align={'center'}>
-              Already a user? <Link as={NextLink} href='/login' color={'blue.400'}>Login</Link>
+              Not a user? <Link as={NextLink} href='/signup' color={'blue.400'}>Signup</Link>
             </Text>
           </Stack>
         </Stack>
       </Box>
     </Stack>
   </Flex>
-  )
+
+    );
 }
