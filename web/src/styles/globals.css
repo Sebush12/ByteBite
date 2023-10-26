@@ -105,3 +105,13 @@ a {
     color-scheme: dark;
   }
 }
+
+.nav-link {
+  text-decoration: none !important;
+}
+
+.nav-active {
+  border-bottom: 3px solid rgb(16, 150, 118);
+}
+
+

@@ -31,11 +31,13 @@ export const Footer: FC = () => {
           <Link as={NextLink} href="/">
             Home
           </Link>
-          <Link as={NextLink} href="/profile">
-            Profile
+          <Text>|</Text>
+          <Link as={NextLink} href="/about">
+            About
           </Link>
-          <Link as={NextLink} href="/dashboard">
-            Dashboard
+          <Text>|</Text>
+          <Link as={NextLink} href="/contact">
+            Contact Us
           </Link>
         </Stack>
         <Spacer />
