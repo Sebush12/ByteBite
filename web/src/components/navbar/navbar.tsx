@@ -16,9 +16,18 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
-  Center
+  Center,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { SignupForm } from "../forms/signup";
+import { Link } from "@chakra-ui/next-js";
+import NextLink from "next/link";
+import { Login } from "../forms/login";
 
 type Props = {
   isTopOfPage: boolean;
@@ -32,9 +41,17 @@ export const Navbar = ({
   selectedPage,
   setSelectedPage,
 }: Props) => {
-
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: loginModalOpen,
+    onOpen: openLoginModal,
+    onClose: closeLoginModal,
+  } = useDisclosure();
+  const {
+    isOpen: signupModalOpen,
+    onOpen: openSignupModal,
+    onClose: closeSignupModal,
+  } = useDisclosure();
   const flexBetween = "flex items-center justify-between";
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
   const navbarBackground = isTopOfPage ? "" : "drop-shadow";
@@ -46,26 +63,11 @@ export const Navbar = ({
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>Logo</Box>
           <Flex gap={"20px"}>
-            <NavbarLink
-              page="Home"
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-            />
-            <NavbarLink
-              page="About Us"
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-            />
-            <NavbarLink
-              page="Calculator"
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-            />
-            <NavbarLink
-              page="Contact Us"
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-            />
+            <NavbarLink page="Home" route="" />
+            <NavbarLink page="About Us" route="about" />
+
+            <NavbarLink page="Calculator" route="calc" />
+            <NavbarLink page="Contact Us" route="contact" />
           </Flex>
           <Flex alignItems={"center"}>
             <Stack direction={"row"}>
@@ -100,9 +102,42 @@ export const Navbar = ({
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={openLoginModal}>Login</MenuItem>
+                  <MenuItem onClick={openSignupModal}>Sign Up</MenuItem>
+                  <MenuItem>
+                    <NavbarLink page="About Us" route="about" />
+                  </MenuItem>
+                  <MenuItem>
+                    <NavbarLink page="Contact Us" route="contact" />
+                  </MenuItem>
+                  <Modal
+                    isCentered
+                    onClose={closeLoginModal}
+                    isOpen={loginModalOpen}
+                    motionPreset="slideInBottom"
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Login />
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+                  <Modal
+                    isCentered
+                    onClose={closeSignupModal}
+                    isOpen={signupModalOpen}
+                    motionPreset="slideInBottom"
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <SignupForm />
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
 
                   <Flex
                     justifyContent={{ base: "center", md: "flex-end" }}

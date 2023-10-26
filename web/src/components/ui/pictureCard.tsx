@@ -9,9 +9,15 @@ export interface PicCardProps extends PropsWithChildren {
 
 export const PicCard: FC<PicCardProps> = ({ alt, children, heading, img }) => {
   return (
-    <Card maxW="sm">
+    <Card maxW="md">
       <CardBody>
-        <Image src={img} alt={alt} borderRadius="lg" />
+        <Image
+          src={img}
+          alt={alt}
+          borderRadius="lg"
+          boxSize="20em"
+          align="center"
+        />
         <Stack mt="6" spacing="3">
           <Heading size="md">{heading}</Heading>
           <Text>{children}</Text>

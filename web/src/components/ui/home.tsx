@@ -35,7 +35,7 @@ export const Home: FC = () => {
           <Heading as="h1">ByteBite Tracker</Heading>
         </Stack>
       </Flex>
-      <HStack justifyContent="center" alignItems="center">
+      <HStack justifyContent="center" alignItems="top" pt="2em">
         <PicCard
           img={"images/pexels-lukas-669623.jpg"}
           alt={""}
@@ -62,7 +62,6 @@ export const Home: FC = () => {
           alt={""}
           heading={"Focus on your acvitity while we do the work for you"}
         >
-          {" "}
           At ByteBite, we understand that achieving your health and fitness
           goals isn't just about what you eat but also how you move. Once your
           done putting in your daily food intake, WE DO ALL THE WORK FOR YOU!
@@ -70,21 +69,6 @@ export const Home: FC = () => {
           of a healthy lifestyle.
         </PicCard>
       </HStack>
-
-      <Modal
-        isCentered
-        onClose={onClose}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
-            <SignupForm />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
     </>
   );
 };
