@@ -1,17 +1,23 @@
 import {
-  Box,
+
   Text,
   VStack,
   Flex,
   Heading,
-  Stack,
   Button,
+  useToast
 } from "@chakra-ui/react";
 import { FC } from "react";
 
 const ContactUs: FC = () => {
+  const toast = useToast()
   return (
-    <Flex direction="column" align="center" justify="center" height="50vh">
+    <Flex
+      direction="column"
+      align="center"
+      justify="center"
+      height="90vh"
+    >
       <Heading as="h1" size="2xl" mb={4}>
         Contact Us
       </Heading>
@@ -29,7 +35,15 @@ const ContactUs: FC = () => {
           colorScheme="blue"
           size="lg"
           mt={6}
-          onClick={() => alert("Your message has been sent.")}
+          onClick={() =>
+            toast({
+              title: 'Message Sent',
+              description: "We have received your message!",
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+            })
+          }
         >
           Send Message
         </Button>
