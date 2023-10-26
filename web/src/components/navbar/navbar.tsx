@@ -22,12 +22,15 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
+  Image,
+  Icon,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { SignupForm } from "../forms/signup";
 import { Link } from "@chakra-ui/next-js";
 import NextLink from "next/link";
 import { Login } from "../forms/login";
+import { PicCard } from "../ui/pictureCard";
 
 type Props = {
   isTopOfPage: boolean;
@@ -61,7 +64,18 @@ export const Navbar = ({
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box>Logo</Box>
+          <Box>
+            {colorMode === "dark" ? (
+              <Image
+                src="images\ByteBiteLogoWhite.png"
+                alt="Logo"
+                w={100}
+                h={75}
+              />
+            ) : (
+              <Image src="images\ByteBiteLogo.png" alt="Logo" w={100} h={75} />
+            )}
+          </Box>
           <Flex gap={"20px"}>
             <NavbarLink page="Home" route="" />
             <NavbarLink page="About Us" route="about" />

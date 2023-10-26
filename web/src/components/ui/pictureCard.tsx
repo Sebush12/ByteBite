@@ -15,7 +15,7 @@ export const PicCard: FC<PicCardProps> = ({ alt, children, heading, img }) => {
           src={img}
           alt={alt}
           borderRadius="lg"
-          boxSize="20em"
+          boxSize="25em"
           align="center"
         />
         <Stack mt="6" spacing="3">

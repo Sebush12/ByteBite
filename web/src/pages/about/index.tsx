@@ -1,28 +1,12 @@
-import { PicCard } from "@/components/ui/pictureCard";
-import {
-  Box,
-  Text,
-  VStack,
-  Flex,
-  Heading,
-  Stack,
-  SimpleGrid,
-  HStack,
-} from "@chakra-ui/react";
 import { FC } from "react";
+import { Box, Text, VStack, Flex, Heading, HStack } from "@chakra-ui/react";
+import { PicCard } from "@/components/ui/pictureCard";
 
 const AboutUs: FC = () => {
   return (
-    <>
-      <Flex
-        justifyContent="center" // Center horizontally
-        alignItems="center" // Center vertically
-      >
-        <Stack spacing={2} align="center" pt={4}>
-          <Heading as="h1">About Us</Heading>
-        </Stack>
-      </Flex>
-      <HStack justifyContent="center" alignItems="center">
+    <VStack align="center" spacing={8} py={8}>
+      <Heading as="h1">About Us</Heading>
+      <HStack justifyContent="center" alignItems="center" spacing={4}>
         <PicCard
           img={"images/pexels-suzy-hazelwood-1120575.jpg"}
           alt={""}
@@ -50,7 +34,7 @@ const AboutUs: FC = () => {
           well-being.
         </PicCard>
       </HStack>
-    </>
+    </VStack>
   );
 };
 
