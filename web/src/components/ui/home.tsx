@@ -8,14 +8,26 @@ import {
   Center,
   Button,
   Box,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  MenuItem,
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { PicCard } from "./pictureCard";
+import { SignupForm } from "../forms/signup";
 
 export const Home: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: signupModalOpen,
+    onOpen: openSignupModal,
+    onClose: closeSignupModal,
+  } = useDisclosure();
   return (
-    <Box height={'90vh'}>
+    <Box height={"90vh"}>
       <Flex
         justifyContent="center" // Center horizontally
         alignItems="center" // Center vertically
@@ -40,7 +52,7 @@ export const Home: FC = () => {
           healthier you. That's why we employ the power of graphs to
           revolutionize the way you track your nutrition and wellness journey.
         </PicCard>
-        <Spacer/>
+        <Spacer />
         <PicCard
           img={"images/pexels-pixabay-220301.jpg"}
           alt={""}
@@ -51,7 +63,7 @@ export const Home: FC = () => {
           complex calculations, ensuring that you have accurate and up-to-date
           nutritional information at your fingertips.
         </PicCard>
-        <Spacer/>
+        <Spacer />
         <PicCard
           img={"images/pexels-kate-trifo-4024914.jpg"}
           alt={""}
@@ -66,9 +78,23 @@ export const Home: FC = () => {
         <Spacer />
       </HStack>
       <Center>
-        <Button size={'lg'} colorScheme="teal">
+        <Button size={"lg"} colorScheme="teal" onClick={openSignupModal}>
           Join Now
         </Button>
+        <Modal
+          isCentered
+          onClose={closeSignupModal}
+          isOpen={signupModalOpen}
+          motionPreset="slideInBottom"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalCloseButton />
+            <ModalBody>
+              <SignupForm />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </Center>
     </Box>
   );
