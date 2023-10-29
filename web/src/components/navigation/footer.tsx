@@ -28,20 +28,20 @@ export const Footer: FC = () => {
         align={{ base: "center", md: "center" }}
       >
         <Stack direction={"row"} spacing={6}>
-          <Link as={NextLink} href="/">
+          <Link as={NextLink} href="/" data-testid="home-link">
             Home
           </Link>
           <Text>|</Text>
-          <Link as={NextLink} href="/about">
+          <Link as={NextLink} href="/about" data-testid="about-link">
             About
           </Link>
           <Text>|</Text>
-          <Link as={NextLink} href="/contact">
+          <Link as={NextLink} href="/contact" data-testid="contact-link">
             Contact Us
           </Link>
         </Stack>
         <Spacer />
-        <Text>© 2023 ByteBite Tracker. No rights reserved</Text>
+        <Text data-testid="copyright">© 2023 ByteBite Tracker. No rights reserved</Text>
       </Container>
     </Box>
   );

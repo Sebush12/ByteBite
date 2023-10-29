@@ -9,7 +9,9 @@
     "n start": "next start",
     "lint": "next lint",
     "watch": "graphql-codegen -w",
-    "start": "graphql-codegen -w && next dev"
+    "start": "graphql-codegen -w && next dev",
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -30,6 +32,9 @@
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@graphql-codegen/typescript-urql": "^4.0.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -37,6 +42,8 @@
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.50.0",
     "eslint-config-next": "13.5.4",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "typescript": "^5.2.2"
   }
 }
