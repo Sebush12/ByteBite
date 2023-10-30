@@ -10,6 +10,7 @@ class Users(models.Model):
     username = models.CharField(max_length=40)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)  # This should be a hashed value!
 
@@ -44,11 +45,14 @@ class Users_info(models.Model):
         return f"Info for {self.user.first_name} {self.user.last_name}"
     
 class FoodItem(models.Model):
-    name = models.CharField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=40, primary_key=True)
     calories = models.PositiveIntegerField()
-    protein = models.DecimalField(max_digits=5, decimal_places=2)
-    carbs = models.DecimalField(max_digits=5, decimal_places=2)
-    fat = models.DecimalField(max_digits=5, decimal_places=2)
+    protein = models.DecimalField(max_digits=6, decimal_places=2)
+    carbs = models.DecimalField(max_digits=6, decimal_places=2)
+    fat = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return self.name
 
 
 class UserFoodLog(models.Model):
