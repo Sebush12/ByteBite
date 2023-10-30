@@ -13,7 +13,9 @@ import { PicCard } from "@/components/ui/pictureCard";
 const AboutUs: FC = () => {
   return (
     <VStack align="center" spacing={8} py={8}>
-      <Heading as="h1">About Us</Heading>
+      <Heading as="h1" data-testid="about-heading">
+        About Us
+      </Heading>
       <HStack
         justifyContent="center"
         alignItems="center"
@@ -21,8 +23,9 @@ const AboutUs: FC = () => {
         padding={5}
       >
         <PicCard
+          data-testid="about-mission"
           img={"images/pexels-suzy-hazelwood-1120575.jpg"}
-          alt={""}
+          alt={"mission"}
           heading={"Our Mission"}
         >
           At ByteBite, our mission is to provide you with powerful tools and
@@ -31,7 +34,7 @@ const AboutUs: FC = () => {
         <Spacer />
         <PicCard
           img={"images/pexels-any-lane-5945660.jpg"}
-          alt={""}
+          alt={"calc"}
           heading={"Why Choose Us?"}
         >
           We believe in simplicity and accuracy. ByteBite offers seamless
@@ -40,8 +43,9 @@ const AboutUs: FC = () => {
         </PicCard>
         <Spacer />
         <PicCard
+          data-testid="about-"
           img={"images/pexels-ylanite-koppens-2008135.jpg"}
-          alt={""}
+          alt={"success"}
           heading={"Your Success is Our Success"}
         >
           We're here to support you in achieving your health and fitness goals.
