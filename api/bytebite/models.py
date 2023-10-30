@@ -25,7 +25,7 @@ class Users(models.Model):
         return check_password(raw_password, self.password)
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class Users_info(models.Model):
