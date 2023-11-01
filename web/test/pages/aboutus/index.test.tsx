@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import AboutUs from "@/pages/about";
-describe("Footer", () => {
+
+
+describe("AboutUs", () => {
   it("renders About Us heading", () => {
     render(<AboutUs />);
 

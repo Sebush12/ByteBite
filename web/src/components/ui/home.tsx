@@ -43,7 +43,7 @@ export const Home: FC = () => {
         <Spacer />
         <PicCard
           img={"images/pexels-lukas-669623.jpg"}
-          alt={""}
+          alt={"nutrition"}
           heading={"Graphical Insights for Nutritional Success"}
         >
           At ByteBite, we understand that achieving your nutritional goals
@@ -55,7 +55,7 @@ export const Home: FC = () => {
         <Spacer />
         <PicCard
           img={"images/pexels-pixabay-220301.jpg"}
-          alt={""}
+          alt={"calc"}
           heading={"Seamless Nutritional Calculations for Your Convenience"}
         >
           At ByteBite, we believe in making nutrition tracking as effortless as
@@ -66,7 +66,7 @@ export const Home: FC = () => {
         <Spacer />
         <PicCard
           img={"images/pexels-kate-trifo-4024914.jpg"}
-          alt={""}
+          alt={"activity"}
           heading={"Focus on your acvitity while we do the work for you"}
         >
           At ByteBite, we understand that achieving your health and fitness
@@ -78,7 +78,7 @@ export const Home: FC = () => {
         <Spacer />
       </HStack>
       <Center>
-        <Button size={"lg"} colorScheme="teal" onClick={openSignupModal}>
+        <Button size={"lg"} colorScheme="teal" onClick={openSignupModal} data-testid='join-button'>
           Join Now
         </Button>
         <Modal
