@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query GET_USERS {\n    allUsers {\n      id\n      name\n      info {\n        goalWeight\n        height\n        startWeight\n      }\n    }\n  }\n": types.Get_UsersDocument,
+    "\n  mutation CreateFoodItem($calories: Int!, $carbs: Decimal!, $fat: Decimal!, $name: String!, $protein: Decimal!) {\n  createFoodItem(calories: $calories, carbs: $carbs, fat: $fat, name: $name, protein: $protein) {\n    foodItem {\n      calories\n      carbs\n      fat\n      name\n      protein\n    }\n  }\n}\n": types.CreateFoodItemDocument,
 };
 
 /**
@@ -34,6 +35,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GET_USERS {\n    allUsers {\n      id\n      name\n      info {\n        goalWeight\n        height\n        startWeight\n      }\n    }\n  }\n"): (typeof documents)["\n  query GET_USERS {\n    allUsers {\n      id\n      name\n      info {\n        goalWeight\n        height\n        startWeight\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateFoodItem($calories: Int!, $carbs: Decimal!, $fat: Decimal!, $name: String!, $protein: Decimal!) {\n  createFoodItem(calories: $calories, carbs: $carbs, fat: $fat, name: $name, protein: $protein) {\n    foodItem {\n      calories\n      carbs\n      fat\n      name\n      protein\n    }\n  }\n}\n"): (typeof documents)["\n  mutation CreateFoodItem($calories: Int!, $carbs: Decimal!, $fat: Decimal!, $name: String!, $protein: Decimal!) {\n  createFoodItem(calories: $calories, carbs: $carbs, fat: $fat, name: $name, protein: $protein) {\n    foodItem {\n      calories\n      carbs\n      fat\n      name\n      protein\n    }\n  }\n}\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
