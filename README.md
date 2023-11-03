@@ -1,21 +1,27 @@
 # @ByteBite
 
+## Development Tools
+* Npm
+* Node
+* Yarn
+* Python
+
 ## Development Setup
 
-When installing the tools needed for development see the [tools section](#tools) to see which versions to use.
+### Client
 
-* Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+* Navigate to web directory and run the ```yarn``` command to install dependencies.
+* Run ```yarn compile``` to build graphql types based on server schema.
+* Run ```yarn dev``` to build and start the project.
 
-* Change directories into the root of this repository.
+### Server
+* Navigate to api directory and activate the virtual environment (venv).
+* Run ```pip install -r requirements.txt``` to install dependencies.
+* Run ```py (windows) || python3`(mac) manage.py runserver``` to start server
 
-* Install container.
-  - `docker-compose build`
-
-* start project
-  - `docker-compose up`
 
 ## Notes
 
-* Open browser and go to `http://localhost:3000/` to view running project.
-
-* When working on the project you can leave docker and the container running to view changes in real time.
+* Open browser and go to `http://localhost:3000/` to view `Client`.
+* Open browser at `127.0.0.1:8000/admin` to view Django admin page. 
+* Open browser at `127.0.0.1:8000/graphql` to view graphiql admin page. 

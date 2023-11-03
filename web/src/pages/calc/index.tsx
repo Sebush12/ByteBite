@@ -9,6 +9,8 @@ import {
   Select,
   Heading,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import LoginReq from "../login";
 
 const CalorieIntakeCalculator: React.FC = () => {
   const [weightInPounds, setWeightInPounds] = useState<number | string>("");
@@ -65,6 +67,10 @@ const CalorieIntakeCalculator: React.FC = () => {
     }
   };
 
+  const {status} = useSession();
+  if(status == 'unauthenticated') {
+    return <LoginReq />
+  }
   return (
     <VStack spacing={6} align="center">
       <Heading as="h1" pt="20px">

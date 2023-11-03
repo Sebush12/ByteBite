@@ -4,7 +4,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Heading,
   Input,
   InputGroup,
@@ -20,12 +19,23 @@ import {
   ModalContent,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useFormik } from "formik";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import NextLink from "next/link";
 import { FC, useState } from "react";
 import { SignupForm } from "./signup";
+import { signIn } from "next-auth/react"
 
 export const Login: FC = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    onSubmit: (values) => signIn('credentials', {
+      email: values.email,
+      password: values.password
+    })
+  });
   const [showPassword, setShowPassword] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -43,63 +53,78 @@ export const Login: FC = () => {
           boxShadow={"lg"}
           p={8}
         >
-          <Stack spacing={4}>
-            <FormControl id="userName" isRequired>
-              <FormLabel>Username</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
-                <InputRightElement h={"full"}>
-                  <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword: boolean) => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Login
-              </Button>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack spacing={4}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <Input 
+                type="text" 
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                id="email"
+                name="email"
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <InputGroup>
+                  <Input 
+                  type={showPassword ? "text" : "password"}
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  id="password"
+                  name="password"
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword: boolean) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Stack spacing={10} pt={2}>
+                <Button
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  type="submit"
+                >
+                  Login
+                </Button>
+              </Stack>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Not a user?{" "}
+                  <Link color={"blue.400"} onClick={onOpen}>
+                    Signup
+                  </Link>
+                </Text>
+                <Modal
+                  isCentered
+                  onClose={onClose}
+                  isOpen={isOpen}
+                  motionPreset="slideInBottom"
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <SignupForm />
+                    </ModalBody>
+                  </ModalContent>
+                </Modal>
+              </Stack>
             </Stack>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Not a user?{" "}
-                <Link color={"blue.400"} onClick={onOpen}>
-                  Signup
-                </Link>
-              </Text>
-              <Modal
-                isCentered
-                onClose={onClose}
-                isOpen={isOpen}
-                motionPreset="slideInBottom"
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <SignupForm />
-                  </ModalBody>
-                </ModalContent>
-              </Modal>
-            </Stack>
-          </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>

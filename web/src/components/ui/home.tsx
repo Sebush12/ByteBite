@@ -1,6 +1,5 @@
 import {
   Flex,
-  useDisclosure,
   Heading,
   Stack,
   HStack,
@@ -14,13 +13,13 @@ import {
   ModalContent,
   ModalOverlay,
   MenuItem,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { PicCard } from "./pictureCard";
 import { SignupForm } from "../forms/signup";
 
 export const Home: FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: signupModalOpen,
     onOpen: openSignupModal,

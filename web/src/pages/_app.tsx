@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { useState } from "react";
-
+import { SessionProvider } from "next-auth/react"
 import { Client, Provider, cacheExchange, fetchExchange } from "urql";
 import { SelectedPage } from "./shared/types";
 import { Footer } from "@/components/navigation/footer";
@@ -13,11 +13,10 @@ const client = new Client({
   exchanges: [cacheExchange, fetchExchange],
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps:{session, ...pageProps} }: AppProps) {
   const [selectedPage, setSelectedPage] = useState(SelectedPage.Home);
   return (
-    <>
-      
+    <SessionProvider session={session}>
       <Provider value={client}>
         <ChakraProvider>
           <Navbar
@@ -27,9 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
           children={undefined}
           />
           <Component {...pageProps} />
+          <Footer />
         </ChakraProvider>
-        <Footer />
       </Provider>
-    </>
+    </SessionProvider>
   );
 }
