@@ -83,7 +83,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "bytebite",
+        "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "password",
         "HOST": "bytebite-project.ctr49t0lbvgx.us-east-2.rds.amazonaws.com",

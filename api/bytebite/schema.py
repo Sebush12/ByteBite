@@ -5,12 +5,50 @@ from graphene_django import DjangoObjectType, DjangoListField
 from .forms import UsersForm, UserUpdateForm
 from .models import Users, Users_info, FoodItem, UserFoodLog
 from graphene_django.types import DjangoObjectType
+from django.contrib.auth import authenticate, login, logout
 
 
 class UsersType(DjangoObjectType):
     class Meta:
         model = Users
-        fields = "__all__"
+        
+
+class CreateUser(graphene.Mutation):
+    users = graphene.Field(UsersType)
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
+        email = graphene.String(required=True)
+    
+    def mutate(self, info, username, password, first_name, last_name, email):
+        users = Users(username=username, first_name=first_name, last_name=last_name, email=email)
+        users.set_password(password)
+        users.save()
+        return CreateUser(users=users)
+
+class LoginUser(graphene.Mutation):
+    users = graphene.Field(UsersType)
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    def mutate(self, info, username, password):
+        users = authenticate(username=username, password=password)
+        if users:
+            login(info.context, users)
+            return LoginUser(users=users)
+        return LoginUser(users=None)
+
+class LogoutUser(graphene.Mutation):
+    success = graphene.Boolean()
+
+    def mutate(self, info):
+        logout(info.context)
+        return LogoutUser(success=True)
 
 class FoodItemType(DjangoObjectType):
     class Meta:
@@ -33,6 +71,9 @@ class FoodItemMutation(graphene.Mutation):
         return FoodItemMutation(food_item=food_item)
 
 class Mutation(graphene.ObjectType):
+    create_user = CreateUser.Field()
+    login_user = LoginUser.Field()
+    logout_user = LogoutUser.Field()
     create_food_item = FoodItemMutation.Field()
 
 """
