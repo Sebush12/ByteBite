@@ -12,21 +12,20 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  MenuItem,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { FC } from "react";
-import { PicCard } from "./pictureCard";
-import { SignupForm } from "../forms/signup";
+  useDisclosure
+} from '@chakra-ui/react';
+import { FC } from 'react';
+import { PicCard } from './pictureCard';
+import { SignupForm } from '../forms/signup';
 
 export const Home: FC = () => {
   const {
     isOpen: signupModalOpen,
     onOpen: openSignupModal,
-    onClose: closeSignupModal,
+    onClose: closeSignupModal
   } = useDisclosure();
   return (
-    <Box height={"90vh"}>
+    <Box height={'90vh'}>
       <Flex
         justifyContent="center" // Center horizontally
         alignItems="center" // Center vertically
@@ -41,43 +40,43 @@ export const Home: FC = () => {
       <HStack justifyContent="center" alignItems="top" p="2em">
         <Spacer />
         <PicCard
-          img={"images/pexels-lukas-669623.jpg"}
-          alt={"nutrition"}
-          heading={"Graphical Insights for Nutritional Success"}
+          img={'images/pexels-lukas-669623.jpg'}
+          alt={'nutrition'}
+          heading={'Graphical Insights for Nutritional Success'}
         >
-          At ByteBite, we understand that achieving your nutritional goals
+          {`At ByteBite, we understand that achieving your nutritional goals
           requires more than just logging your meals and activities. It's about
           gaining valuable insights and visualizing your progress towards a
           healthier you. That's why we employ the power of graphs to
-          revolutionize the way you track your nutrition and wellness journey.
+          revolutionize the way you track your nutrition and wellness journey.`}
         </PicCard>
         <Spacer />
         <PicCard
-          img={"images/pexels-pixabay-220301.jpg"}
-          alt={"calc"}
-          heading={"Seamless Nutritional Calculations for Your Convenience"}
+          img={'images/pexels-pixabay-220301.jpg'}
+          alt={'calc'}
+          heading={'Seamless Nutritional Calculations for Your Convenience'}
         >
-          At ByteBite, we believe in making nutrition tracking as effortless as
+          {`At ByteBite, we believe in making nutrition tracking as effortless as
           possible for our users. Our platform is designed to handle all the
           complex calculations, ensuring that you have accurate and up-to-date
-          nutritional information at your fingertips.
+          nutritional information at your fingertips.`}
         </PicCard>
         <Spacer />
         <PicCard
-          img={"images/pexels-kate-trifo-4024914.jpg"}
-          alt={"activity"}
-          heading={"Focus on your acvitity while we do the work for you"}
+          img={'images/pexels-kate-trifo-4024914.jpg'}
+          alt={'activity'}
+          heading={'Focus on your acvitity while we do the work for you'}
         >
-          At ByteBite, we understand that achieving your health and fitness
+          {`At ByteBite, we understand that achieving your health and fitness
           goals isn't just about what you eat but also how you move. Once your
           done putting in your daily food intake, WE DO ALL THE WORK FOR YOU!
           Saving you more time to put towards any other focus towards your goal
-          of a healthy lifestyle.
+          of a healthy lifestyle.`}
         </PicCard>
         <Spacer />
       </HStack>
       <Center>
-        <Button size={"lg"} colorScheme="teal" onClick={openSignupModal} data-testid='join-button'>
+        <Button size={'lg'} colorScheme="teal" onClick={openSignupModal} data-testid='join-button'>
           Join Now
         </Button>
         <Modal

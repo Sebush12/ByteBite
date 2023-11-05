@@ -1,19 +1,18 @@
-import { Button, Link } from "@chakra-ui/react";
-import { SelectedPage } from "./types";
-import React from "react";
-import { useRouter } from "next/router";
-import { Url } from "next/dist/shared/lib/router/router";
-type Props = {
+import { Button } from '@chakra-ui/react';
+import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import { Url } from 'next/dist/shared/lib/router/router';
+interface Props {
   buttonText: string;
   routingPath: Url;
   colorScheme?: string;
-};
+}
 
-export const RouteButton = ({
+export const RouteButton: FC<Props> = ({
   buttonText,
   routingPath,
-  colorScheme = "green",
-}: Props) => {
+  colorScheme = 'green'
+}) => {
   const route = useRouter();
   return (
     <Button
@@ -22,7 +21,7 @@ export const RouteButton = ({
         route.push(routingPath);
       }}
       marginRight="5px"
-      marginBottom={"20px"}
+      marginBottom={'20px'}
     >
       {buttonText}
     </Button>

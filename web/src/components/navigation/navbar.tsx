@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { SelectedPage } from "@/pages/shared/types";
-import { NavbarLink } from "./navbar-link";
-import { useRouter } from "next/router";
+import { FC } from 'react';
+import { NavbarLink } from './navbar-link';
 import {
   Box,
   Flex,
@@ -22,50 +20,31 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
-  Image,
-  Icon,
-} from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { SignupForm } from "../forms/signup";
-import { Link } from "@chakra-ui/next-js";
-import NextLink from "next/link";
-import { Login } from "../forms/login";
-import { PicCard } from "../ui/pictureCard";
+  Image
+} from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { SignupForm } from '../forms/signup';
+import { Login } from '../forms/login';
 
-type Props = {
-  isTopOfPage: boolean;
-  selectedPage: SelectedPage;
-  setSelectedPage: (value: SelectedPage) => void;
-  children: React.ReactNode;
-};
-
-export const Navbar = ({
-  isTopOfPage,
-  selectedPage,
-  setSelectedPage,
-}: Props) => {
+export const Navbar: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const {
     isOpen: loginModalOpen,
     onOpen: openLoginModal,
-    onClose: closeLoginModal,
+    onClose: closeLoginModal
   } = useDisclosure();
   const {
     isOpen: signupModalOpen,
     onOpen: openSignupModal,
-    onClose: closeSignupModal,
+    onClose: closeSignupModal
   } = useDisclosure();
-  const flexBetween = "flex items-center justify-between";
-  const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
-  const navbarBackground = isTopOfPage ? "" : "drop-shadow";
-  const route = useRouter();
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Box>
-            {colorMode === "dark" ? (
+            {colorMode === 'dark' ? (
               <Image
                 src="images\ByteBiteLogoWhite.png"
                 alt="Logo"
@@ -76,38 +55,38 @@ export const Navbar = ({
               <Image src="images\ByteBiteLogo.png" alt="Logo" w={100} h={75} />
             )}
           </Box>
-          <Flex gap={"20px"}>
+          <Flex gap={'20px'}>
             <NavbarLink page="Home" route="" />
             <NavbarLink page="About Us" route="about" />
 
             <NavbarLink page="Calculator" route="calc" />
             <NavbarLink page="Contact Us" route="contact" />
           </Flex>
-          <Flex alignItems={"center"}>
-            <Stack direction={"row"}>
+          <Flex alignItems={'center'}>
+            <Stack direction={'row'}>
               <Button onClick={toggleColorMode}>
-                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 
               <Menu>
                 <MenuButton
                   as={Button}
-                  rounded={"full"}
-                  variant={"link"}
-                  cursor={"pointer"}
+                  rounded={'full'}
+                  variant={'link'}
+                  cursor={'pointer'}
                   minW={0}
                 >
                   <Avatar
-                    size={"sm"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
+                    size={'sm'}
+                    src={'https://avatars.dicebear.com/api/male/username.svg'}
                   />
                 </MenuButton>
-                <MenuList alignItems={"center"}>
+                <MenuList alignItems={'center'}>
                   <br />
                   <Center>
                     <Avatar
-                      size={"2xl"}
-                      src={"https://avatars.dicebear.com/api/male/username.svg"}
+                      size={'2xl'}
+                      src={'https://avatars.dicebear.com/api/male/username.svg'}
                     />
                   </Center>
                   <br />
@@ -154,8 +133,8 @@ export const Navbar = ({
                   </Modal>
 
                   <Flex
-                    justifyContent={{ base: "center", md: "flex-end" }}
-                    marginTop={{ base: "10px", md: "0" }}
+                    justifyContent={{ base: 'center', md: 'flex-end' }}
+                    marginTop={{ base: '10px', md: '0' }}
                   ></Flex>
                 </MenuList>
               </Menu>

@@ -1,27 +1,22 @@
-import React, { FC, useState } from "react";
+import React, { FC } from 'react';
 import {
-  Flex,
-  useDisclosure,
   Heading,
   Stack,
   Avatar,
   Box,
-  Button,
-  Input,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
   Text,
-  Spacer,
   Select,
   Textarea,
-  SimpleGrid,
-} from "@chakra-ui/react";
+  SimpleGrid
+} from '@chakra-ui/react';
 
 export const Account: FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [avatarURL, setAvatarURL] = useState();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+  // const [avatarURL, setAvatarURL] = useState();
 
   return (
     <>
@@ -32,7 +27,7 @@ export const Account: FC = () => {
               Profile Settings
             </Heading>
             <Stack>
-              <Avatar size={"lg"} />
+              <Avatar size={'lg'} />
             </Stack>
           </CardHeader>
           <CardBody>
@@ -74,17 +69,17 @@ export const Account: FC = () => {
       </Box>
     </>
 
-    // <Box height={"90vh"}>
-    //   <Flex justifyContent="flex-start" alignItems="center" p={4}>
-    //     <Box></Box>
-    //     <Stack spacing={2} align="left">
-    //       <Avatar size={"2xl"} src={avatarURL} />
-    //     </Stack>
-    //     <Stack spacing={2} align="center" padding={4}>
-    //       <Heading as="h1">Account Settings</Heading>
-    //     </Stack>
-    //   </Flex>
-    // </Box>
+  // <Box height={"90vh"}>
+  //   <Flex justifyContent="flex-start" alignItems="center" p={4}>
+  //     <Box></Box>
+  //     <Stack spacing={2} align="left">
+  //       <Avatar size={"2xl"} src={avatarURL} />
+  //     </Stack>
+  //     <Stack spacing={2} align="center" padding={4}>
+  //       <Heading as="h1">Account Settings</Heading>
+  //     </Stack>
+  //   </Flex>
+  // </Box>
   );
 };
 

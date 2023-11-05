@@ -18,30 +18,29 @@ import {
   ModalCloseButton,
   ModalBody,
   Modal,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import NextLink from "next/link";
-import { FC, useState } from "react";
-import { Login } from "./login";
+  useDisclosure
+} from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { FC, useState } from 'react';
+import { Login } from './login';
 
 export const SignupForm: FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex align={"center"} justify={"center"}>
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+    <Flex align={'center'} justify={'center'}>
+      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+        <Stack align={'center'}>
+          <Heading fontSize={'4xl'} textAlign={'center'}>
             Sign up
           </Heading>
-          <Text fontSize={"lg"}>to start reaching your goals</Text>
+          <Text fontSize={'lg'}>to start reaching your goals</Text>
         </Stack>
         <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
-          boxShadow={"lg"}
+          rounded={'lg'}
+          bg={useColorModeValue('white', 'gray.700')}
+          boxShadow={'lg'}
           p={8}
         >
           <Stack spacing={4}>
@@ -70,11 +69,11 @@ export const SignupForm: FC = () => {
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
-                <InputRightElement h={"full"}>
+                <Input type={showPassword ? 'text' : 'password'} />
+                <InputRightElement h={'full'}>
                   <Button
-                    variant={"ghost"}
-                    onClick={() =>
+                    variant={'ghost'}
+                    onClick={(): void =>
                       setShowPassword((showPassword: boolean) => !showPassword)
                     }
                   >
@@ -87,19 +86,19 @@ export const SignupForm: FC = () => {
               <Button
                 loadingText="Submitting"
                 size="lg"
-                bg={"blue.400"}
-                color={"white"}
+                bg={'blue.400'}
+                color={'white'}
                 _hover={{
-                  bg: "blue.500",
+                  bg: 'blue.500'
                 }}
               >
                 Sign up
               </Button>
             </Stack>
             <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user?{" "}
-                <Link color={"blue.400"} onClick={onOpen}>
+              <Text align={'center'}>
+                Already a user?{' '}
+                <Link color={'blue.400'} onClick={onOpen}>
                   Login
                 </Link>
               </Text>

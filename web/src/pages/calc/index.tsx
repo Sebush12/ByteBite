@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -7,37 +7,37 @@ import {
   Text,
   VStack,
   Select,
-  Heading,
-} from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import LoginReq from "../login";
+  Heading
+} from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import LoginReq from '../login';
 
 const CalorieIntakeCalculator: React.FC = () => {
-  const [weightInPounds, setWeightInPounds] = useState<number | string>("");
-  const [activityLevel, setActivityLevel] = useState("sedentary");
-  const [goal, setGoal] = useState("maintenance");
+  const [weightInPounds, setWeightInPounds] = useState<number | string>('');
+  const [activityLevel, setActivityLevel] = useState('sedentary');
+  const [goal, setGoal] = useState('maintenance');
   const [calories, setCalories] = useState<number | null>(null);
 
-  const calculateCalories = () => {
+  const calculateCalories = (): void => {
     if (weightInPounds) {
       const weight = Number(weightInPounds);
       let caloriesValue = 0;
 
-      if (goal === "weightLoss") {
+      if (goal === 'weightLoss') {
         caloriesValue = weight * 12;
-      } else if (goal === "maintenance") {
+      } else if (goal === 'maintenance') {
         caloriesValue = weight * 15;
-      } else if (goal === "weightGain") {
+      } else if (goal === 'weightGain') {
         caloriesValue = weight * 18;
       }
 
-      if (activityLevel === "sedentary") {
+      if (activityLevel === 'sedentary') {
         caloriesValue *= 1.2;
-      } else if (activityLevel === "lightlyActive") {
+      } else if (activityLevel === 'lightlyActive') {
         caloriesValue *= 1.375;
-      } else if (activityLevel === "moderatelyActive") {
+      } else if (activityLevel === 'moderatelyActive') {
         caloriesValue *= 1.55;
-      } else if (activityLevel === "veryActive") {
+      } else if (activityLevel === 'veryActive') {
         caloriesValue *= 1.725;
       }
 
@@ -47,11 +47,11 @@ const CalorieIntakeCalculator: React.FC = () => {
     }
   };
 
-  const [feet, setFeet] = useState<number | string>("");
-  const [inches, setInches] = useState<number | string>("");
+  const [feet, setFeet] = useState<number | string>('');
+  const [inches, setInches] = useState<number | string>('');
   const [bmi, setBMI] = useState<number | null>(null);
 
-  const calculateBMI = () => {
+  const calculateBMI = (): void => {
     if (weightInPounds && feet && inches) {
       const weight = Number(weightInPounds);
       const height = Number(feet) * 12 + Number(inches);
@@ -69,7 +69,7 @@ const CalorieIntakeCalculator: React.FC = () => {
 
   const {status} = useSession();
   if(status == 'unauthenticated') {
-    return <LoginReq />
+    return <LoginReq />;
   }
   return (
     <VStack spacing={6} align="center">
@@ -77,7 +77,7 @@ const CalorieIntakeCalculator: React.FC = () => {
         Calorie Intake Calculator
       </Heading>
       <Box>
-        <Select value={goal} onChange={(e) => setGoal(e.target.value)} mb={2}>
+        <Select value={goal} onChange={(e): void => setGoal(e.target.value)} mb={2}>
           <option value="weightLoss">Weight Loss</option>
           <option value="maintenance">Maintenance</option>
           <option value="weightGain">Weight Gain</option>
@@ -86,12 +86,12 @@ const CalorieIntakeCalculator: React.FC = () => {
           type="number"
           placeholder="Current Weight (lbs)"
           value={weightInPounds}
-          onChange={(e) => setWeightInPounds(e.target.value)}
+          onChange={(e): void => setWeightInPounds(e.target.value)}
           mb={2}
         />
         <Select
           value={activityLevel}
-          onChange={(e) => setActivityLevel(e.target.value)}
+          onChange={(e): void => setActivityLevel(e.target.value)}
           mb={2}
         >
           <option value="sedentary">Sedentary</option>
@@ -114,19 +114,19 @@ const CalorieIntakeCalculator: React.FC = () => {
           type="number"
           placeholder="Weight (lbs)"
           value={weightInPounds}
-          onChange={(e) => setWeightInPounds(e.target.value)}
+          onChange={(e): void => setWeightInPounds(e.target.value)}
         />
         <Input
           type="number"
           placeholder="Feet"
           value={feet}
-          onChange={(e) => setFeet(e.target.value)}
+          onChange={(e): void => setFeet(e.target.value)}
         />
         <Input
           type="number"
           placeholder="Inches"
           value={inches}
-          onChange={(e) => setInches(e.target.value)}
+          onChange={(e): void => setInches(e.target.value)}
         />
       </Stack>
       <Button colorScheme="blue" onClick={calculateBMI}>

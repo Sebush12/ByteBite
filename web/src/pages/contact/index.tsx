@@ -5,12 +5,13 @@ import {
   Flex,
   Heading,
   Button,
-  useToast
-} from "@chakra-ui/react";
-import { FC } from "react";
+  useToast,
+  ToastId
+} from '@chakra-ui/react';
+import { FC } from 'react';
 
 const ContactUs: FC = () => {
-  const toast = useToast()
+  const toast = useToast();
   return (
     <Flex
       direction="column"
@@ -35,13 +36,13 @@ const ContactUs: FC = () => {
           colorScheme="blue"
           size="lg"
           mt={6}
-          onClick={() =>
+          onClick={(): ToastId =>
             toast({
               title: 'Message Sent',
-              description: "We have received your message!",
+              description: 'We have received your message!',
               status: 'success',
               duration: 9000,
-              isClosable: true,
+              isClosable: true
             })
           }
         >
