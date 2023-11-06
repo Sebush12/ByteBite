@@ -1,17 +1,55 @@
-import { Card, CardBody, CardHeader, Center, Heading } from '@chakra-ui/react';
-import { FC, PropsWithChildren } from 'react';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Center,
+  Heading, HStack, Spacer,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useColorModeValue
+} from "@chakra-ui/react";
+import { FC } from "react";
+import AddFoodItem from "@/components/forms/add-food";
 
-export const UpdateSect:FC<PropsWithChildren> = ({
-  children
-}) => {
+export const UpdateSect:FC = () => {
   return (
     <Center mt='2em'>
-      <Card align='center' minW='100em'>
-        <CardHeader>
-          <Heading>Update Your Progress</Heading>
+      <Card minW='100em' bg={useColorModeValue("blackAlpha", "whiteAlpha.300")}>
+        <CardHeader> 
+          <Heading textAlign="center">Update Your Progress</Heading>
         </CardHeader>
         <CardBody>
-          {children}
+          <Tabs isFitted variant="enclosed">
+            <TabList mb='1em' color={useColorModeValue("blackAlpha", "whiteAlpha")}>
+              <Tab bg={useColorModeValue("purple.200", "purple.500")}>Calories</Tab>
+              <Tab bg={useColorModeValue("green.200", "green.500")}>Exercise</Tab>
+              <Tab bg={useColorModeValue("orange.200", "orange.500")}>Weight</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel >
+                <HStack>
+                  <Spacer />
+                  <Heading textAlign="center" noOfLines={2}>Coming soon...</Heading>
+                  <Spacer />
+                  <AddFoodItem />
+                  <Spacer />
+                </HStack>
+              </TabPanel>
+              <TabPanel>
+                <Spacer />
+                <Heading textAlign="center" noOfLines={2}>Coming soon...</Heading>
+                <Spacer />
+              </TabPanel>
+              <TabPanel>
+                <Spacer />
+                <Heading textAlign="center" noOfLines={2}>Coming soon...</Heading>
+                <Spacer />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </CardBody>
       </Card>
     </Center>
