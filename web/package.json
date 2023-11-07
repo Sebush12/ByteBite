@@ -9,7 +9,7 @@
     "n start": "next start",
     "lint": "next lint",
     "watch": "graphql-codegen -w",
-    "start": "graphql-codegen -w && next dev",
+    "start": "graphql-codegen && next dev",
     "test": "jest --watch",
     "coverage": "jest --coverage"
   },

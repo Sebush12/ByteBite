@@ -7,10 +7,11 @@ import AddFoodItem from "@/components/forms/add-food";
 
 export const App: FC = () => {
 const testing = false;
+const {status} = useSession()
   if(testing) {
     return <AddFoodItem />;
   } else {
-    if(status == 'authenticated') return <Dashboard />;
+    if(status == 'unauthenticated') return <Dashboard />;
     else return <Home />;
   }
 };

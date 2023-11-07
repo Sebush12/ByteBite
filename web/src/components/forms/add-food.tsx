@@ -111,13 +111,13 @@ export const AddFoodItem: FC = () => {
             <Stack spacing={4}>
               <Box>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="item">Item</FormLabel>
+                  <FormLabel htmlFor="name">Item</FormLabel>
                   <Input
                     type="text"
                     onChange={formik.handleChange}
                     value={formik.values.name}
-                    id="item"
-                    name="item"
+                    id="name"
+                    name="name"
                     placeholder="Pizza..."
                   />
                 </FormControl>
