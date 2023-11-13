@@ -50,6 +50,24 @@ class LogoutUser(graphene.Mutation):
         logout(info.context)
         return LogoutUser(success=True)
 
+class ChangePassword(graphene.Mutation):
+    users = graphene.Field(UsersType)
+
+    class Arguments:
+        email = graphene.String(required=True)
+        old_password = graphene.String(required=True)
+        new_password = graphene.String(required=True)
+
+    def mutate(self, info, email, old_password, new_password):
+        users = Users.objects.get(email=email)
+
+        if users.check_password(old_password):
+            users.set_password(new_password)
+            users.save()
+            return ChangePassword(users=users)
+        else:
+            raise Exception("Old password is incorrect.")
+
 class FoodItemType(DjangoObjectType):
     class Meta:
         model = FoodItem
@@ -74,6 +92,7 @@ class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     login_user = LoginUser.Field()
     logout_user = LogoutUser.Field()
+    change_password = ChangePassword.Field()
     create_food_item = FoodItemMutation.Field()
 
 """
