@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { NavbarLink } from './navbar-link';
+import { FC } from "react";
+import { NavbarLink } from "./navbar-link";
 import {
   Box,
   Flex,
@@ -20,31 +20,31 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
-  Image
-} from '@chakra-ui/react';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { SignupForm } from '../forms/signup';
-import { Login } from '../forms/login';
+  Image,
+} from "@chakra-ui/react";
+import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { SignupForm } from "../forms/signup";
+import { Login } from "../forms/login";
 
 export const Navbar: FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const {
     isOpen: loginModalOpen,
     onOpen: openLoginModal,
-    onClose: closeLoginModal
+    onClose: closeLoginModal,
   } = useDisclosure();
   const {
     isOpen: signupModalOpen,
     onOpen: openSignupModal,
-    onClose: closeSignupModal
+    onClose: closeSignupModal,
   } = useDisclosure();
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
-            {colorMode === 'dark' ? (
+            {colorMode === "dark" ? (
               <Image
                 src="images\ByteBiteLogoWhite.png"
                 alt="Logo"
@@ -55,48 +55,37 @@ export const Navbar: FC = () => {
               <Image src="images\ByteBiteLogo.png" alt="Logo" w={100} h={75} />
             )}
           </Box>
-          <Flex gap={'20px'}>
+          <Flex gap={"20px"}>
             <NavbarLink page="Home" route="" />
             <NavbarLink page="About Us" route="about" />
 
             <NavbarLink page="Calculator" route="calc" />
             <NavbarLink page="Contact Us" route="contact" />
           </Flex>
-          <Flex alignItems={'center'}>
-            <Stack direction={'row'}>
+          <Flex alignItems={"center"}>
+            <Stack direction={"row"}>
               <Button onClick={toggleColorMode}>
-                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
 
               <Menu>
                 <MenuButton
                   as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
                   minW={0}
+                  size={"lg"}
                 >
-                  <Avatar
-                    size={'sm'}
-                    src={'https://avatars.dicebear.com/api/male/username.svg'}
-                  />
+                  <HamburgerIcon />
                 </MenuButton>
-                <MenuList alignItems={'center'}>
-                  <br />
-                  <Center>
-                    <Avatar
-                      size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>Username</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem onClick={openLoginModal}>Login</MenuItem>
-                  <MenuItem onClick={openSignupModal}>Sign Up</MenuItem>
+                <MenuList>
+                  <MenuItem pl={"20px"} onClick={openLoginModal}>
+                    Login
+                  </MenuItem>
+                  <MenuItem pl={"20px"} onClick={openSignupModal}>
+                    Sign Up
+                  </MenuItem>
                   <MenuItem>
                     <NavbarLink page="About Us" route="about" />
                   </MenuItem>
@@ -133,8 +122,8 @@ export const Navbar: FC = () => {
                   </Modal>
 
                   <Flex
-                    justifyContent={{ base: 'center', md: 'flex-end' }}
-                    marginTop={{ base: '10px', md: '0' }}
+                    justifyContent={{ base: "center", md: "flex-end" }}
+                    marginTop={{ base: "10px", md: "0" }}
                   ></Flex>
                 </MenuList>
               </Menu>
