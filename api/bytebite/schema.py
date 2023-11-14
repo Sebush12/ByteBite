@@ -37,11 +37,12 @@ class LoginUser(graphene.Mutation):
         password = graphene.String(required=True)
 
     def mutate(self, info, username, password):
-        users = authenticate(username=username, password=password)
-        if users:
+        users = authenticate(info.context, username=username, password=password)
+        if users is not None:
             login(info.context, users)
             return LoginUser(users=users)
-        return LoginUser(users=None)
+        else:
+            raise Exception("Invalid username or password")
 
 class LogoutUser(graphene.Mutation):
     success = graphene.Boolean()
