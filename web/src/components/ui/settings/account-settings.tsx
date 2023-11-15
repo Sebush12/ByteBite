@@ -66,7 +66,7 @@ export const AccountSettings = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <ChangePassword />
+            <ChangePassword closeModal={closePasswordModal} />
           </ModalBody>
         </ModalContent>
       </Modal>
