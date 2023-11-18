@@ -2,36 +2,54 @@ from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render
 from django.db.models import Sum
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 # Create your models here.
 # Django creates an id (primary key) automatically
-class Users(models.Model):
-    username = models.CharField(max_length=40)
+class CustomUserManager(BaseUserManager):
+    def create_user(self, username, email, password=None, first_name=None, last_name=None, **extra_fields):
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, first_name=first_name, last_name=last_name, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, password=None, first_name=None, last_name=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(username, email, password, first_name, last_name, **extra_fields)
+
+class User(AbstractBaseUser):
+    username = models.CharField(max_length=40, unique=True)
+    email = models.EmailField(max_length=40, unique=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    name = models.CharField(max_length=40, null = True)
-    email = models.EmailField(max_length=40, unique=True)
-    password = models.CharField(max_length=100)  # This should be a hashed value!
+    password = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
 
     def save(self, *args, **kwargs):
-        self.name = f"{self.first_name} {self.last_name}"
-        super(Users, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def set_password(self, raw_password):
-        # Use Django's hashing mechanism here
         self.password = make_password(raw_password)
 
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
-
+    
     def __str__(self):
         return self.username
 
-
 class Users_info(models.Model):
     user = models.OneToOneField(
-        Users, related_name="info", on_delete=models.CASCADE, primary_key=True
+        User, related_name="info", on_delete=models.CASCADE, primary_key=True
     )
     height = models.IntegerField()
     age = models.PositiveIntegerField()

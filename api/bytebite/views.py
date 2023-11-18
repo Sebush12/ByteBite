@@ -1,16 +1,34 @@
 from django.shortcuts import render
 from graphene_django.views import GraphQLView
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
-class CustomGraphQLView(GraphQLView):
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        
-        # Check if the GraphQL mutation was a successful login
-        if response.status_code == 200 and 'loginUser' in response.json().get('data', {}):
-            # Assuming the authenticated user is returned in the 'user' field
-            authenticated_user = response.json()['data']['loginUser']['user']
-            # Log in the user
-            login(request, authenticated_user)
+@csrf_exempt
+@require_POST
+def custom_login(request):
+    """
+    Custom login view for handling login via GraphQL mutation.
+    Expects POST request with 'username' and 'password' parameters.
+    """
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
-        return response
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+        return JsonResponse({'success': True, 'message': 'Login successful'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid login credentials'})
+
+@login_required
+def custom_logout(request):
+    """
+    Custom logout view for handling logout via GraphQL mutation.
+    """
+    logout(request)
+    return JsonResponse({'success': True, 'message': 'Logout successful'})

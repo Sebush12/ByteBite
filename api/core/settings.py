@@ -143,6 +143,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 GRAPHENE = {"SCHEMA": "bytebite.schema.schema"}
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    # Include other authentication backends if needed
+    'bytebite.backends.EmailBackend'
 ]

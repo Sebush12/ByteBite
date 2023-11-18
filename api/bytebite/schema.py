@@ -2,19 +2,24 @@ import graphene
 from django import forms
 from graphene_django.forms import mutation
 from graphene_django import DjangoObjectType, DjangoListField
-from .forms import UsersForm, UserUpdateForm
-from .models import Users, Users_info, FoodItem, UserFoodLog
+from .forms import UserForm, UserUpdateForm
+from .models import User, Users_info, FoodItem, UserFoodLog
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 
 
-class UsersType(DjangoObjectType):
+class UserType(DjangoObjectType):
     class Meta:
-        model = Users
-        
+        model = User
+        fields = ("id", "username", "email", "first_name", "last_name",)
+
+    id = graphene.ID()
+
+    def resolve_id(self, info):
+        return self.id
 
 class CreateUser(graphene.Mutation):
-    users = graphene.Field(UsersType)
+    user = graphene.Field(UserType)
 
     class Arguments:
         username = graphene.String(required=True)
@@ -24,25 +29,36 @@ class CreateUser(graphene.Mutation):
         email = graphene.String(required=True)
     
     def mutate(self, info, username, password, first_name, last_name, email):
-        users = Users(username=username, first_name=first_name, last_name=last_name, email=email)
-        users.set_password(password)
-        users.save()
-        return CreateUser(users=users)
+        user = User(username=username, first_name=first_name, last_name=last_name, email=email)
+        user.set_password(password)
+        user.save()    
+        return CreateUser(user=user)
 
 class LoginUser(graphene.Mutation):
-    users = graphene.Field(UsersType)
+    success = graphene.Boolean()
+    message = graphene.String()
+    user = graphene.Field(UserType)
 
     class Arguments:
         username = graphene.String(required=True)
         password = graphene.String(required=True)
 
     def mutate(self, info, username, password):
-        users = authenticate(info.context, username=username, password=password)
-        if users is not None:
-            login(info.context, users)
-            return LoginUser(users=users)
-        else:
-            raise Exception("Invalid username or password")
+        try:
+            user = User.objects.get(username=username)
+            if user.check_password(password):
+                login(info.context, user)
+                # Create a UserType instance to return
+                user_instance = UserType(
+                    id=user.id,
+                    username=user.username,
+                    # Include other fields you want to return
+                )
+                return LoginUser(success=True, message="Login successful", user=user_instance)
+            else:
+                return LoginUser(success=False, message="Invalid password", user=None)
+        except User.DoesNotExist:
+            return LoginUser(success=False, message="User not found", user=None)
 
 class LogoutUser(graphene.Mutation):
     success = graphene.Boolean()
@@ -52,7 +68,7 @@ class LogoutUser(graphene.Mutation):
         return LogoutUser(success=True)
 
 class ChangePassword(graphene.Mutation):
-    users = graphene.Field(UsersType)
+    user = graphene.Field(UserType)
 
     class Arguments:
         email = graphene.String(required=True)
@@ -60,12 +76,12 @@ class ChangePassword(graphene.Mutation):
         new_password = graphene.String(required=True)
 
     def mutate(self, info, email, old_password, new_password):
-        users = Users.objects.get(email=email)
+        user = User.objects.get(email=email)
 
-        if users.check_password(old_password):
-            users.set_password(new_password)
-            users.save()
-            return ChangePassword(users=users)
+        if user.check_password(old_password):
+            user.set_password(new_password)
+            user.save()
+            return ChangePassword(user=user)
         else:
             raise Exception("Old password is incorrect.")
 
@@ -96,25 +112,6 @@ class Mutation(graphene.ObjectType):
     change_password = ChangePassword.Field()
     create_food_item = FoodItemMutation.Field()
 
-"""
-class createUser(mutation.DjangoModelFormMutation):
-    user = graphene.Field(UsersType)
-
-    class Meta:
-        formCl = UsersForm
-    def perform_mutate(cls,form,info):
-        user = form.save()
-        return cls(user=user)
-
-class updateUser(mutation.DjangoModelFormMutation):
-    user = graphene.Field(UsersType)
-
-    class Meta:
-        formCl = UserUpdateForm
-    def perform_mutate(cls,form,info):
-        user = form.save()
-        return cls(user=user)
-"""
 class Users_InfoType(DjangoObjectType):
     class Meta:
         model = Users_info
@@ -131,20 +128,18 @@ class UserFoodLogType(DjangoObjectType):
         fields = ("user", "date", "food_item", "servings")
 
 class Query(graphene.ObjectType):
-    all_users = graphene.List(UsersType)
+    all_users = graphene.List(UserType)
     all_users_info = graphene.List(Users_InfoType)
+    user_by_id = graphene.Field(UserType, id=graphene.ID(required=True))
 
     def resolve_all_users(root, info):
-        return Users.objects.all()
+        return User.objects.all()
 
     def resolve_all_users_info(root, info):
         return Users_info.objects.all()
-
-"""
-class Mutation(graphene.ObjectType):
-    create_user = createUser.Field()
-    update_user = updateUser.Field()
-schema = graphene.Schema(query=Query, mutation=Mutation)
-"""
+    
+    def resolve_user_by_id(self, info, id):
+        # Implement the logic to retrieve a user by ID from the database
+        return User.objects.get(pk=id)
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
