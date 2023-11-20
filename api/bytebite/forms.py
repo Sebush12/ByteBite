@@ -1,13 +1,13 @@
 from django import forms
-from .models import Users
+from .models import User
 
-class UsersForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
-        model = Users
+        model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
-        model = Users
+        model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
