@@ -52,6 +52,9 @@ class LoginUser(graphene.Mutation):
                 user_instance = UserType(
                     id=user.id,
                     username=user.username,
+                    email=user.email,
+                    first_name=user.first_name,
+                    last_name=user.last_name, 
                     # Include other fields you want to return
                 )
                 return LoginUser(success=True, message="Login successful", user=user_instance)
