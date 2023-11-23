@@ -10,7 +10,7 @@ import {
   Heading
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import LoginReq from '../login';
+import LoginReq from '@/components/forms/login-required';
 
 const CalorieIntakeCalculator: React.FC = () => {
   const [weightInPounds, setWeightInPounds] = useState<number | string>('');

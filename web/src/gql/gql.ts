@@ -13,8 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  mutation CreateFoodItem($calories: Int!, $carbs: Decimal!, $fat: Decimal!, $name: String!, $protein: Decimal!) {\n  createFoodItem(calories: $calories, carbs: $carbs, fat: $fat, name: $name, protein: $protein) {\n    foodItem {\n      calories\n      carbs\n      fat\n      name\n      protein\n    }\n  }\n}\n": types.CreateFoodItemDocument,
-    "\n  query GET_USERS {\n    allUsers {\n      id\n      name\n      info {\n        goalWeight\n        height\n        startWeight\n      }\n    }\n  }\n": types.Get_UsersDocument,
+    "\n  mutation CreateFoodItem(\n    $calories: Int!\n    $carbs: Decimal!\n    $fat: Decimal!\n    $name: String!\n    $protein: Decimal!\n  ) {\n    createFoodItem(\n      calories: $calories\n      carbs: $carbs\n      fat: $fat\n      name: $name\n      protein: $protein\n    ) {\n      foodItem {\n        calories\n        carbs\n        fat\n        name\n        protein\n      }\n    }\n  }\n": types.CreateFoodItemDocument,
+    "\n  mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {\n    createUser(email: $email, firstName: $firstName, lastName: $lastName, password: $password, username: $email) {\n    user {\n      email\n      firstName\n      lastName\n      username\n    }\n  }\n}\n": types.CreateUserDocument,
 };
 
 /**
@@ -34,11 +34,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateFoodItem($calories: Int!, $carbs: Decimal!, $fat: Decimal!, $name: String!, $protein: Decimal!) {\n  createFoodItem(calories: $calories, carbs: $carbs, fat: $fat, name: $name, protein: $protein) {\n    foodItem {\n      calories\n      carbs\n      fat\n      name\n      protein\n    }\n  }\n}\n"): (typeof documents)["\n  mutation CreateFoodItem($calories: Int!, $carbs: Decimal!, $fat: Decimal!, $name: String!, $protein: Decimal!) {\n  createFoodItem(calories: $calories, carbs: $carbs, fat: $fat, name: $name, protein: $protein) {\n    foodItem {\n      calories\n      carbs\n      fat\n      name\n      protein\n    }\n  }\n}\n"];
+export function graphql(source: "\n  mutation CreateFoodItem(\n    $calories: Int!\n    $carbs: Decimal!\n    $fat: Decimal!\n    $name: String!\n    $protein: Decimal!\n  ) {\n    createFoodItem(\n      calories: $calories\n      carbs: $carbs\n      fat: $fat\n      name: $name\n      protein: $protein\n    ) {\n      foodItem {\n        calories\n        carbs\n        fat\n        name\n        protein\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateFoodItem(\n    $calories: Int!\n    $carbs: Decimal!\n    $fat: Decimal!\n    $name: String!\n    $protein: Decimal!\n  ) {\n    createFoodItem(\n      calories: $calories\n      carbs: $carbs\n      fat: $fat\n      name: $name\n      protein: $protein\n    ) {\n      foodItem {\n        calories\n        carbs\n        fat\n        name\n        protein\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GET_USERS {\n    allUsers {\n      id\n      name\n      info {\n        goalWeight\n        height\n        startWeight\n      }\n    }\n  }\n"): (typeof documents)["\n  query GET_USERS {\n    allUsers {\n      id\n      name\n      info {\n        goalWeight\n        height\n        startWeight\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {\n    createUser(email: $email, firstName: $firstName, lastName: $lastName, password: $password, username: $email) {\n    user {\n      email\n      firstName\n      lastName\n      username\n    }\n  }\n}\n"): (typeof documents)["\n  mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {\n    createUser(email: $email, firstName: $firstName, lastName: $lastName, password: $password, username: $email) {\n    user {\n      email\n      firstName\n      lastName\n      username\n    }\n  }\n}\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

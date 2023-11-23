@@ -12,32 +12,43 @@ import {
   Link,
   Stack,
   Text,
-  Modal,
-  ModalOverlay,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  useDisclosure
+  useToast
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FC, useState } from 'react';
-import { SignupForm } from './signup';
+import NextLink from 'next/link';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export const Login: FC = () => {
+  const router = useRouter();
+  const [loginError, setLoginError] = useState(false);
+  const toast = useToast();
+
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
-    onSubmit: (values) => signIn('credentials', {
-      email: values.email,
-      password: values.password
-    })
+    onSubmit: async (values) => {
+      const response = await signIn('credentials', {
+        email: values.email,
+        password: values.password,
+        redirect: false
+      });
+      if(response?.error) {
+        setLoginError(true);
+        toast({
+          title: 'Invalid email or password',
+          status: 'error',
+          isClosable: true,
+          position: 'top'
+        });
+      }
+    }
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex align={'center'} justify={'center'}>
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
@@ -55,7 +66,7 @@ export const Login: FC = () => {
         >
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={4}>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={loginError}>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <Input
                   type="text"
@@ -65,7 +76,7 @@ export const Login: FC = () => {
                   name="email"
                 />
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={loginError}>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <InputGroup>
                   <Input
@@ -101,28 +112,17 @@ export const Login: FC = () => {
                   Login
                 </Button>
               </Stack>
-              <Stack pt={6}>
-                <Text align={'center'}>
+              {
+                router.route === '/new-user' ? <></> :
+                  <Stack pt={6}>
+                    <Text align={'center'}>
                   Not a user?{' '}
-                  <Link color={'blue.400'} onClick={onOpen}>
+                      <Link as={NextLink} color={'blue.400'} href='/new-user' >
                     Signup
-                  </Link>
-                </Text>
-                <Modal
-                  isCentered
-                  onClose={onClose}
-                  isOpen={isOpen}
-                  motionPreset="slideInBottom"
-                >
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <SignupForm />
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
-              </Stack>
+                      </Link>
+                    </Text>
+                  </Stack>
+              }
             </Stack>
           </form>
         </Box>

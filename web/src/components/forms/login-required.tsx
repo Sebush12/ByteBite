@@ -4,7 +4,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Heading,
   Input,
   InputGroup,
@@ -12,30 +11,21 @@ import {
   useColorModeValue,
   Link,
   Stack,
-  Text,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  ModalBody,
-  Modal,
-  useDisclosure
+  Text
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FC, useState } from 'react';
-import { Login } from './login';
 
-export const SignupForm: FC = () => {
+export const LoginReq: FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
-    <Flex align={'center'} justify={'center'}>
+    <Flex align={'center'} justify={'center'} height="89vh">
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
           <Heading fontSize={'4xl'} textAlign={'center'}>
-            Sign up
+            Please Login To Use This Feature
           </Heading>
-          <Text fontSize={'lg'}>to start reaching your goals</Text>
         </Stack>
         <Box
           rounded={'lg'}
@@ -44,27 +34,9 @@ export const SignupForm: FC = () => {
           p={8}
         >
           <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName" isRequired>
-                  <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-            </HStack>
             <FormControl id="userName" isRequired>
               <FormLabel>Username</FormLabel>
               <Input type="text" />
-            </FormControl>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
@@ -92,30 +64,16 @@ export const SignupForm: FC = () => {
                   bg: 'blue.500'
                 }}
               >
-                Sign up
+                Login
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already a user?{' '}
-                <Link color={'blue.400'} onClick={onOpen}>
-                  Login
+                Not a user?{' '}
+                <Link as={NextLink} color={'blue.400'} href='/new-user'>
+                  Signup
                 </Link>
               </Text>
-              <Modal
-                isCentered
-                onClose={onClose}
-                isOpen={isOpen}
-                motionPreset="slideInBottom"
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Login />
-                  </ModalBody>
-                </ModalContent>
-              </Modal>
             </Stack>
           </Stack>
         </Box>
@@ -123,3 +81,5 @@ export const SignupForm: FC = () => {
     </Flex>
   );
 };
+
+export default LoginReq;

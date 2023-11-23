@@ -6,24 +6,14 @@ import {
   Spacer,
   Center,
   Button,
-  Box,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure
+  Box
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { PicCard } from './pictureCard';
-import { SignupForm } from '../forms/signup';
+import { useRouter } from 'next/router';
 
 export const Home: FC = () => {
-  const {
-    isOpen: signupModalOpen,
-    onOpen: openSignupModal,
-    onClose: closeSignupModal
-  } = useDisclosure();
+  const router = useRouter();
   return (
     <Box height={'90vh'}>
       <Flex
@@ -76,23 +66,15 @@ export const Home: FC = () => {
         <Spacer />
       </HStack>
       <Center>
-        <Button size={'lg'} colorScheme="teal" onClick={openSignupModal} data-testid='join-button'>
+        <Button
+          size={'lg'}
+          colorScheme="teal"
+          onClick={(): Promise<boolean> => router.push('/new-user')}
+          data-testid='join-button'
+        >
           Join Now
         </Button>
-        <Modal
-          isCentered
-          onClose={closeSignupModal}
-          isOpen={signupModalOpen}
-          motionPreset="slideInBottom"
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalCloseButton />
-            <ModalBody>
-              <SignupForm />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+
       </Center>
     </Box>
   );
