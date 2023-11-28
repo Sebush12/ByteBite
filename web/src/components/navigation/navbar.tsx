@@ -17,14 +17,17 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
-  Image
+  Image,
+  Heading
 } from '@chakra-ui/react';
 import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Login } from '../forms/login';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 export const Navbar: FC = () => {
   const router = useRouter();
+  const {data, status} = useSession();
   const { colorMode, toggleColorMode } = useColorMode();
   const {
     isOpen: loginModalOpen,
@@ -73,36 +76,52 @@ export const Navbar: FC = () => {
                   <HamburgerIcon />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem pl={'20px'} onClick={openLoginModal}>
+                  {status === 'authenticated' ?
+                    <>
+                      <Heading size={'md'} textAlign={'center'}>{data.user?.name}</Heading><hr/>
+                      <MenuItem>
+                        <NavbarLink page="Home" route="" />
+                      </MenuItem>
+                      <MenuItem>
+                        <NavbarLink page="Profile" route="profile" />
+                      </MenuItem>
+                      <MenuItem>
+                        <NavbarLink page="About Us" route="about" />
+                      </MenuItem>
+                      <MenuItem>
+                        <NavbarLink page="Contact Us" route="contact" />
+                      </MenuItem>
+                    </>
+                    :
+                    <>
+                      <MenuItem pl={'20px'} onClick={openLoginModal}>
                     Login
-                  </MenuItem>
-                  <MenuItem pl={'20px'} onClick={(): Promise<boolean> => router.push('/new-user')}>
+                      </MenuItem>
+                      <MenuItem pl={'20px'} onClick={(): Promise<boolean> => router.push('/new-user')}>
                     Sign Up
-                  </MenuItem>
-                  <MenuItem>
-                    <NavbarLink page="About Us" route="about" />
-                  </MenuItem>
-                  <MenuItem>
-                    <NavbarLink page="Contact Us" route="contact" />
-                  </MenuItem>
-                  <Modal
-                    isCentered
-                    onClose={closeLoginModal}
-                    isOpen={loginModalOpen}
-                    motionPreset="slideInBottom"
-                  >
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalCloseButton />
-                      <ModalBody>
-                        <Login />
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
-                  <Flex
-                    justifyContent={{ base: 'center', md: 'flex-end' }}
-                    marginTop={{ base: '10px', md: '0' }}
-                  ></Flex>
+                      </MenuItem>
+                      <MenuItem>
+                        <NavbarLink page="About Us" route="about" />
+                      </MenuItem>
+                      <MenuItem>
+                        <NavbarLink page="Contact Us" route="contact" />
+                      </MenuItem>
+                      <Modal
+                        isCentered
+                        onClose={closeLoginModal}
+                        isOpen={loginModalOpen}
+                        motionPreset="slideInBottom"
+                      >
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalCloseButton />
+                          <ModalBody>
+                            <Login />
+                          </ModalBody>
+                        </ModalContent>
+                      </Modal>
+                    </>
+                  }
                 </MenuList>
               </Menu>
             </Stack>

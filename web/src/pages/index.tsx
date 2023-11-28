@@ -1,17 +1,17 @@
 import Home from '@/components/ui/home';
 import { FC } from 'react';
-import Dashboard from '@/components/ui/dashboard';
-import AddFoodItem from '@/components/forms/add-food';
 import { useSession } from 'next-auth/react';
-import { SettingsPage } from '@/components/ui/settings/settings-page';
+import Dashboard from '@/components/ui/dashboard';
 
 export const App: FC = () => {
   const testing = false;
-  const {status} = useSession();
+  const {data, status} = useSession();
   if(testing) {
-    return <AddFoodItem />;
+    return (<div>
+      {data?.user ? <h1>{data?.user?.name}</h1> : <h1>nothing</h1>}
+    </div>);
   } else {
-    if (status == "unauthenticated") return <SettingsPage />;
+    if (status == 'authenticated') return <Dashboard />;
     else return <Home />;
   }
 };
