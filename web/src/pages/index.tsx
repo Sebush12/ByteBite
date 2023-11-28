@@ -11,7 +11,9 @@ export const App: FC = () => {
       {data?.user ? <h1>{data?.user?.name}</h1> : <h1>nothing</h1>}
     </div>);
   } else {
-    if (status == 'authenticated') return <Dashboard />;
+
+    if (status == "unauthenticated") return <Dashboard />;
+
     else return <Home />;
   }
 };
