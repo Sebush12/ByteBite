@@ -35,12 +35,16 @@ export const ProfileSettings = () => {
       gender: "",
       weight: "",
       goal_weight: "",
+      height: "",
+      age: "",
     },
     onSubmit: (values, formikBag) => {
       const parsedVals = {
         ...values,
         weight: parseInt(values.weight),
         goal_weight: parseInt(values.goal_weight),
+        height: parseInt(values.height),
+        age: parseInt(values.age),
       };
       handleCreate(parsedVals, formikBag);
     },
@@ -102,6 +106,32 @@ export const ProfileSettings = () => {
                 id="goal_weight"
                 name="goal_weight"
                 placeholder="Your Weight Goal"
+                isDisabled={!editMode}
+              />
+            </Box>
+            <Box>
+              <Text as="b">Height(In)</Text>
+
+              <Input
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.height}
+                id="height"
+                name="height"
+                placeholder="Your Height"
+                isDisabled={!editMode}
+              />
+            </Box>
+            <Box>
+              <Text as="b">Age</Text>
+
+              <Input
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.age}
+                id="age"
+                name="age"
+                placeholder="Age"
                 isDisabled={!editMode}
               />
             </Box>
