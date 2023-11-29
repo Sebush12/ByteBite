@@ -94,10 +94,15 @@ export const TdeeCalc: FC = () => {
             )}
           </Formik>
           {tdee && (
-            <Center pt={10}>
-              <Text as={Heading} size="md">
-                Your TDEE: {tdee.toFixed(2)}
+            <Center pt={10} flexDirection="column" alignItems="center">
+              <Text as={Heading} size="md" mb={2}>
+                Your BMR: {tdee.toFixed(2)}
               </Text>
+              <Box textAlign="center">
+                <Text fontSize="sm" color="gray.500">
+                  (Calories per day)
+                </Text>
+              </Box>
             </Center>
           )}
         </Box>

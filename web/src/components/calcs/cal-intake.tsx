@@ -113,10 +113,15 @@ export const CalorieCalc: FC = () => {
             )}
           </Formik>
           {bmr && (
-            <Center pt={10}>
-              <Text as={Heading} size="md">
+            <Center pt={10} flexDirection="column" alignItems="center">
+              <Text as={Heading} size="md" mb={2}>
                 Your BMR: {bmr.toFixed(2)}
               </Text>
+              <Box textAlign="center">
+                <Text fontSize="sm" color="gray.500">
+                  (Calories per day)
+                </Text>
+              </Box>
             </Center>
           )}
         </Box>
