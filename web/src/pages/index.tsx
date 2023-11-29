@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { useSession } from 'next-auth/react';
 import Dashboard from '@/components/ui/dashboard';
 
+
 export const App: FC = () => {
   const testing = false;
   const {data, status} = useSession();
@@ -11,10 +12,7 @@ export const App: FC = () => {
       {data?.user ? <h1>{data?.user?.name}</h1> : <h1>nothing</h1>}
     </div>);
   } else {
-
-    if (status == "unauthenticated") return <Dashboard />;
-
-    else return <Home />;
+    return status === "authenticated" ? <Dashboard /> : <Home />;
   }
 };
 
