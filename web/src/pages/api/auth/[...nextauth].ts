@@ -21,20 +21,6 @@ export const authOptions = {
           exchanges: [cacheExchange, fetchExchange]
         });
 
-        // const LOGIN_USER = graphql(`
-        //   mutation LoginUser($password: String!, $username: String!) {
-        //     loginUser(password: $password, username: $username) {
-        //       users {
-        //         id
-        //         email
-        //         firstName
-        //         lastName
-        //         password
-        //       }
-        //     }
-        //   }
-        // `);
-
         try {
           console.log('Vars: ', credentials?.password,  credentials?.email);
           const variables = (credentials?.password && credentials?.email) ?
@@ -52,7 +38,7 @@ export const authOptions = {
             throw new Error(result.error.message);
           }
 
-          const user = result.data?.loginUser.users;
+          const user = result.data?.loginUser.user;
           console.log(user);
           if (user) {
             return {

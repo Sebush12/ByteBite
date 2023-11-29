@@ -45,6 +45,8 @@ export const Login: FC = () => {
           isClosable: true,
           position: 'top'
         });
+      } else {
+        router.push('/');
       }
     }
   });

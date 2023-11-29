@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { NavbarLink } from './navbar-link';
 import {
   Box,
@@ -34,6 +34,17 @@ export const Navbar: FC = () => {
     onOpen: openLoginModal,
     onClose: closeLoginModal
   } = useDisclosure();
+  useEffect(() => {
+    const handleRouteChange = (): void => {
+      closeLoginModal();
+    };
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [closeLoginModal, router.events]);
+
 
   return (
     <>
