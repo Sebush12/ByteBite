@@ -48,16 +48,19 @@ class User(AbstractBaseUser):
         return self.username
 
 class Users_info(models.Model):
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female')
+    ]
     user = models.OneToOneField(
         User, related_name="info", on_delete=models.CASCADE, primary_key=True
     )
     height = models.IntegerField()
     age = models.PositiveIntegerField()
-    start_weight = models.DecimalField(max_digits=5, decimal_places=2)
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     goal_weight = models.DecimalField(max_digits=5, decimal_places=2)
     daily_calories = models.IntegerField()
-    goal = models.CharField(255)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='male')
 
     def __str__(self):
         return f"Info for {self.user.first_name} {self.user.last_name}"
