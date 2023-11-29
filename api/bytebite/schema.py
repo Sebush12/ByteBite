@@ -6,6 +6,8 @@ from .forms import UserForm, UserUpdateForm
 from .models import User, Users_info, FoodItem, UserFoodLog
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
+from .types import UsersInfoType
+from decimal import Decimal
 
 
 class UserType(DjangoObjectType):
@@ -33,6 +35,68 @@ class CreateUser(graphene.Mutation):
         user.set_password(password)
         user.save()    
         return CreateUser(user=user)
+
+class CreateUsersInfo(graphene.Mutation):
+    users_info = graphene.Field(UsersInfoType)
+
+    class Arguments:
+        height = graphene.Int(required=True)
+        age = graphene.Int(required=True)
+        weight = graphene.Float(required=True)
+        goal_weight = graphene.Float(required=True)
+        daily_calories = graphene.Int(required=True)
+        gender = graphene.String(required=True)
+
+    def mutate(self, info, height, age, weight, goal_weight, daily_calories, gender):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("You must be logged in to perform this action.")
+
+        weight_decimal = Decimal(str(weight))
+        goal_weight_decimal = Decimal(str(goal_weight))
+
+        users_info = Users_info(
+            user=user,
+            height=height,
+            age=age,
+            weight=weight_decimal,
+            goal_weight=goal_weight_decimal,
+            daily_calories=daily_calories,
+            gender=gender,
+        )
+        users_info.save()
+
+        return CreateUsersInfo(users_info=users_info)
+
+class UpdateUsersInfo(graphene.Mutation):
+    users_info = graphene.Field(UsersInfoType)
+
+    class Arguments:
+        height = graphene.Int(required=True)
+        age = graphene.Int(required=True)
+        weight = graphene.Float(required=True)
+        goal_weight = graphene.Float(required=True)
+        daily_calories = graphene.Int(required=True)
+        gender = graphene.String(required=True)
+
+    def mutate(self, info, height, age, weight, goal_weight, daily_calories, gender):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("You must be logged in to perform this action.")
+
+        weight_decimal = Decimal(str(weight))
+        goal_weight_decimal = Decimal(str(goal_weight))
+
+        users_info = Users_info.objects.get(user=user)
+        users_info.height = height
+        users_info.age = age
+        users_info.weight = weight_decimal
+        users_info.goal_weight = goal_weight_decimal
+        users_info.daily_calories = daily_calories
+        users_info.gender = gender
+        users_info.save()
+
+        return UpdateUsersInfo(users_info=users_info)
 
 class LoginUser(graphene.Mutation):
     success = graphene.Boolean()
@@ -114,8 +178,10 @@ class Mutation(graphene.ObjectType):
     logout_user = LogoutUser.Field()
     change_password = ChangePassword.Field()
     create_food_item = FoodItemMutation.Field()
+    create_users_info = CreateUsersInfo.Field()
+    update_users_info = UpdateUsersInfo.Field()
 
-class Users_InfoType(DjangoObjectType):
+class UsersInfoType(DjangoObjectType):
     class Meta:
         model = Users_info
         fields = "__all__"
@@ -132,7 +198,7 @@ class UserFoodLogType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
-    all_users_info = graphene.List(Users_InfoType)
+    all_users_info = graphene.List(UsersInfoType)
     user_by_id = graphene.Field(UserType, id=graphene.ID(required=True))
 
     def resolve_all_users(root, info):
@@ -144,5 +210,18 @@ class Query(graphene.ObjectType):
     def resolve_user_by_id(self, info, id):
         # Implement the logic to retrieve a user by ID from the database
         return User.objects.get(pk=id)
+
+class QueryUsersInfo(graphene.ObjectType):
+    users_info = graphene.Field(Users_info)
+
+    def resolve_users_info(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("You must be logged in to perform this action.")
+
+        try:
+            return Users_info.objects.get(user=user)
+        except Users_info.DoesNotExist:
+            raise Exception("User info not found.")
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
