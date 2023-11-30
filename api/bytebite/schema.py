@@ -3,10 +3,10 @@ from django import forms
 from graphene_django.forms import mutation
 from graphene_django import DjangoObjectType, DjangoListField
 from .forms import UserForm, UserUpdateForm
-from .models import User, Users_info, FoodItem, UserFoodLog
+from .models import User, Users_info, FoodItem, UserFoodLog, Exercise
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
-from .types import UsersInfoType
+from .types import UsersInfoType, ExerciseType
 from decimal import Decimal
 
 
@@ -200,6 +200,15 @@ class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     all_users_info = graphene.List(UsersInfoType)
     user_by_id = graphene.Field(UserType, id=graphene.ID(required=True))
+    users_info_by_email = graphene.Field(UsersInfoType, email=graphene.String(required=True))
+
+def resolve_user_info_by_email(self, info, email):
+    try:
+        # Ensure case-insensitive comparison
+        user_info = UsersInfo.objects.get(user__email__iexact=email)
+        return user_info
+    except UsersInfo.DoesNotExist:
+        return None
 
     def resolve_all_users(root, info):
         return User.objects.all()
