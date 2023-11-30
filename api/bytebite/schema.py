@@ -200,15 +200,6 @@ class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     all_users_info = graphene.List(UsersInfoType)
     user_by_id = graphene.Field(UserType, id=graphene.ID(required=True))
-    users_info_by_email = graphene.Field(UsersInfoType, email=graphene.String(required=True))
-
-def resolve_user_info_by_email(self, info, email):
-    try:
-        # Ensure case-insensitive comparison
-        user_info = UsersInfo.objects.get(user__email__iexact=email)
-        return user_info
-    except UsersInfo.DoesNotExist:
-        return None
 
     def resolve_all_users(root, info):
         return User.objects.all()
@@ -221,7 +212,7 @@ def resolve_user_info_by_email(self, info, email):
         return User.objects.get(pk=id)
 
 class QueryUsersInfo(graphene.ObjectType):
-    users_info = graphene.Field(Users_info)
+    users_info = graphene.Field(UsersInfoType)
 
     def resolve_users_info(self, info):
         user = info.context.user
@@ -229,8 +220,23 @@ class QueryUsersInfo(graphene.ObjectType):
             raise Exception("You must be logged in to perform this action.")
 
         try:
-            return Users_info.objects.get(user=user)
+            user_info = Users_info.objects.get(user=user)
+            return user_info
         except Users_info.DoesNotExist:
-            raise Exception("User info not found.")
+            print("User info not found.")
+            return None
+
+class Query(graphene.ObjectType):
+    user_info_by_email = graphene.Field(
+        UsersInfoType, email=graphene.String(required=True)
+    )
+
+    def resolve_user_info_by_email(self, info, email):
+        try:
+            # Ensure case-insensitive comparison
+            user_info = Users_info.objects.get(user__email__iexact=email)
+            return user_info
+        except UsersInfo.DoesNotExist:
+            return None
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
