@@ -64,7 +64,12 @@ class Users_info(models.Model):
 
     def __str__(self):
         return f"Info for {self.user.first_name} {self.user.last_name}"
-    
+
+class Exercise(models.Model):
+    user = models.ForeignKey(User, related_name="exercises", on_delete=models.CASCADE)
+    workout_time = models.IntegerField()
+    calories_consumed = models.IntegerField()
+
 class FoodItem(models.Model):
     name = models.CharField(max_length=40, primary_key=True)
     calories = models.PositiveIntegerField()

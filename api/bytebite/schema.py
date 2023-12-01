@@ -3,10 +3,10 @@ from django import forms
 from graphene_django.forms import mutation
 from graphene_django import DjangoObjectType, DjangoListField
 from .forms import UserForm, UserUpdateForm
-from .models import User, Users_info, FoodItem, UserFoodLog
+from .models import User, Users_info, FoodItem, UserFoodLog, Exercise
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
-from .types import UsersInfoType
+from .types import UsersInfoType, ExerciseType
 from decimal import Decimal
 
 
@@ -67,6 +67,46 @@ class CreateUsersInfo(graphene.Mutation):
         users_info.save()
 
         return CreateUsersInfo(users_info=users_info)
+
+class CreateUserAndInfo(graphene.Mutation):
+    user = graphene.Field(UserType)
+    users_info = graphene.Field(UsersInfoType)
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
+        email = graphene.String(required=True)
+        height = graphene.Int(required=True)
+        age = graphene.Int(required=True)
+        weight = graphene.Float(required=True)
+        goal_weight = graphene.Float(required=True)
+        daily_calories = graphene.Int(required=True)
+        gender = graphene.String(required=True)
+
+    def mutate(self, info, username, password, first_name, last_name, email, height, age, weight, goal_weight, daily_calories, gender):
+        # Create User
+        user = User(username=username, first_name=first_name, last_name=last_name, email=email)
+        user.set_password(password)
+        user.save()
+
+        # Create UsersInfo
+        weight_decimal = Decimal(str(weight))
+        goal_weight_decimal = Decimal(str(goal_weight))
+
+        users_info = Users_info(
+            user=user,
+            height=height,
+            age=age,
+            weight=weight_decimal,
+            goal_weight=goal_weight_decimal,
+            daily_calories=daily_calories,
+            gender=gender,
+        )
+        users_info.save()
+
+        return CreateUserAndInfo(user=user, users_info=users_info)
 
 class UpdateUsersInfo(graphene.Mutation):
     users_info = graphene.Field(UsersInfoType)
@@ -180,6 +220,7 @@ class Mutation(graphene.ObjectType):
     create_food_item = FoodItemMutation.Field()
     create_users_info = CreateUsersInfo.Field()
     update_users_info = UpdateUsersInfo.Field()
+    create_user_and_info = CreateUserAndInfo.Field()
 
 class UsersInfoType(DjangoObjectType):
     class Meta:
@@ -212,7 +253,7 @@ class Query(graphene.ObjectType):
         return User.objects.get(pk=id)
 
 class QueryUsersInfo(graphene.ObjectType):
-    users_info = graphene.Field(Users_info)
+    users_info = graphene.Field(UsersInfoType)
 
     def resolve_users_info(self, info):
         user = info.context.user
@@ -220,8 +261,23 @@ class QueryUsersInfo(graphene.ObjectType):
             raise Exception("You must be logged in to perform this action.")
 
         try:
-            return Users_info.objects.get(user=user)
+            user_info = Users_info.objects.get(user=user)
+            return user_info
         except Users_info.DoesNotExist:
-            raise Exception("User info not found.")
+            print("User info not found.")
+            return None
+
+class Query(graphene.ObjectType):
+    user_info_by_email = graphene.Field(
+        UsersInfoType, email=graphene.String(required=True)
+    )
+
+    def resolve_user_info_by_email(self, info, email):
+        try:
+            # Ensure case-insensitive comparison
+            user_info = Users_info.objects.get(user__email__iexact=email)
+            return user_info
+        except UsersInfo.DoesNotExist:
+            return None
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
