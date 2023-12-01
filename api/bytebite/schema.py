@@ -68,6 +68,46 @@ class CreateUsersInfo(graphene.Mutation):
 
         return CreateUsersInfo(users_info=users_info)
 
+class CreateUserAndInfo(graphene.Mutation):
+    user = graphene.Field(UserType)
+    users_info = graphene.Field(UsersInfoType)
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
+        email = graphene.String(required=True)
+        height = graphene.Int(required=True)
+        age = graphene.Int(required=True)
+        weight = graphene.Float(required=True)
+        goal_weight = graphene.Float(required=True)
+        daily_calories = graphene.Int(required=True)
+        gender = graphene.String(required=True)
+
+    def mutate(self, info, username, password, first_name, last_name, email, height, age, weight, goal_weight, daily_calories, gender):
+        # Create User
+        user = User(username=username, first_name=first_name, last_name=last_name, email=email)
+        user.set_password(password)
+        user.save()
+
+        # Create UsersInfo
+        weight_decimal = Decimal(str(weight))
+        goal_weight_decimal = Decimal(str(goal_weight))
+
+        users_info = Users_info(
+            user=user,
+            height=height,
+            age=age,
+            weight=weight_decimal,
+            goal_weight=goal_weight_decimal,
+            daily_calories=daily_calories,
+            gender=gender,
+        )
+        users_info.save()
+
+        return CreateUserAndInfo(user=user, users_info=users_info)
+
 class UpdateUsersInfo(graphene.Mutation):
     users_info = graphene.Field(UsersInfoType)
 
@@ -180,6 +220,7 @@ class Mutation(graphene.ObjectType):
     create_food_item = FoodItemMutation.Field()
     create_users_info = CreateUsersInfo.Field()
     update_users_info = UpdateUsersInfo.Field()
+    create_user_and_info = CreateUserAndInfo.Field()
 
 class UsersInfoType(DjangoObjectType):
     class Meta:
