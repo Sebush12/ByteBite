@@ -66,7 +66,7 @@ class Users_info(models.Model):
         return f"Info for {self.user.first_name} {self.user.last_name}"
 
 class Exercise(models.Model):
-    user = models.ForeignKey(User, related_name="exercises", on_delete=models.CASCADE)
+    user_info = models.ForeignKey(Users_info, related_name="exercises", on_delete=models.CASCADE, null=True, blank=True)
     workout_time = models.IntegerField()
     calories_consumed = models.IntegerField()
 

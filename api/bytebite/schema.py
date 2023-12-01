@@ -212,6 +212,26 @@ class FoodItemMutation(graphene.Mutation):
         food_item.save()
         return FoodItemMutation(food_item=food_item)
 
+class CreateExercise(graphene.Mutation):
+    exercise = graphene.Field(ExerciseType)
+
+    class Arguments:
+        user_info_id = graphene.ID(required=True)
+        workout_time = graphene.Int(required=True)
+        calories_consumed = graphene.Int(required=True)
+
+    def mutate(self, info, user_info_id, workout_time, calories_consumed):
+        user_info = Users_info.objects.get(pk=user_info_id)
+
+        exercise = Exercise(
+            user_info=user_info,
+            workout_time=workout_time,
+            calories_consumed=calories_consumed,
+        )
+        exercise.save()
+
+        return CreateExercise(exercise=exercise)
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     login_user = LoginUser.Field()
@@ -221,11 +241,8 @@ class Mutation(graphene.ObjectType):
     create_users_info = CreateUsersInfo.Field()
     update_users_info = UpdateUsersInfo.Field()
     create_user_and_info = CreateUserAndInfo.Field()
+    create_exercise = CreateExercise.Field()
 
-class UsersInfoType(DjangoObjectType):
-    class Meta:
-        model = Users_info
-        fields = "__all__"
 
 class FoodItemType(DjangoObjectType):
     class Meta:
@@ -269,13 +286,23 @@ class QueryUsersInfo(graphene.ObjectType):
 
 class Query(graphene.ObjectType):
     user_info_by_email = graphene.Field(
-        UsersInfoType, email=graphene.String(required=True)
+        UsersInfoType, 
+        id=graphene.ID(),  # Allow querying by ID
+        email=graphene.String(),  # Allow querying by email
     )
 
-    def resolve_user_info_by_email(self, info, email):
+    def resolve_user_info_by_email(self, info, id=None, email=None):
         try:
-            # Ensure case-insensitive comparison
-            user_info = Users_info.objects.get(user__email__iexact=email)
+            if id is not None:
+                # If ID is provided, query by ID
+                user_info = Users_info.objects.get(user__id=id)
+            elif email is not None:
+                # If email is provided, query by email (case-insensitive)
+                user_info = Users_info.objects.get(user__email__iexact=email)
+            else:
+                # If neither ID nor email is provided, return None
+                return None
+
             return user_info
         except UsersInfo.DoesNotExist:
             return None
