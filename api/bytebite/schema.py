@@ -214,7 +214,7 @@ class CreateExercise(graphene.Mutation):
     exercise = graphene.Field(ExerciseType)
 
     class Arguments:
-        user_info_id = graphene.ID(required=True)
+        user_info_id = graphene.Int(required=True)
         workout_time = graphene.Int(required=True)
         calories_consumed = graphene.Int(required=True)
 

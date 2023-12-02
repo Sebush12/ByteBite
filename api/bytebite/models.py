@@ -70,6 +70,9 @@ class Exercise(models.Model):
     workout_time = models.IntegerField()
     calories_consumed = models.IntegerField()
 
+    class Meta:
+        db_table = 'bytebite_exercise'
+
 class FoodItem(models.Model):
     name = models.CharField(max_length=40, primary_key=True)
     calories = models.PositiveIntegerField()
