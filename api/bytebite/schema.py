@@ -112,6 +112,7 @@ class UpdateUsersInfo(graphene.Mutation):
     users_info = graphene.Field(UsersInfoType)
 
     class Arguments:
+        email = graphene.String(required=True)
         height = graphene.Int(required=True)
         age = graphene.Int(required=True)
         weight = graphene.Float(required=True)
@@ -119,19 +120,16 @@ class UpdateUsersInfo(graphene.Mutation):
         daily_calories = graphene.Int(required=True)
         gender = graphene.String(required=True)
 
-    def mutate(self, info, height, age, weight, goal_weight, daily_calories, gender):
-        user = info.context.user
-        if not user.is_authenticated:
-            raise Exception("You must be logged in to perform this action.")
+    def mutate(self, info, email, height, age, weight, goal_weight, daily_calories, gender):
+        try:
+            users_info = Users_info.objects.get(user__email=email)
+        except Users_info.DoesNotExist:
+            raise Exception("User not found.")
 
-        weight_decimal = Decimal(str(weight))
-        goal_weight_decimal = Decimal(str(goal_weight))
-
-        users_info = Users_info.objects.get(user=user)
         users_info.height = height
         users_info.age = age
-        users_info.weight = weight_decimal
-        users_info.goal_weight = goal_weight_decimal
+        users_info.weight = Decimal(str(weight))
+        users_info.goal_weight = Decimal(str(goal_weight))
         users_info.daily_calories = daily_calories
         users_info.gender = gender
         users_info.save()
