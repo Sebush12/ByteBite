@@ -56,7 +56,21 @@ export const authOptions = {
       }
     })
     // ...add more providers here
-  ]
+  ],
   // ... rest of the config ...
+  callbacks: {
+    async jwt({ token, user }): Promise<any> {
+      // user object is available when signing in for the first time
+      if (user) {
+        token.id = user.id; // Store the user's ID in the JWT
+      }
+      return token;
+    },
+    async session({ session, token }): Promise<any> {
+      // Add the user ID to the session
+      session.user.id = token.id;
+      return session;
+    }
+  }
 };
 export default NextAuth(authOptions);

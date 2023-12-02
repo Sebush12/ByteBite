@@ -1,7 +1,7 @@
 import AddUser from '@/components/stepper-items/create-user';
 import UserDetails from '@/components/stepper-items/user-details';
 import { graphql } from '@/gql';
-import { MutationCreateUserArgs } from '@/gql/graphql';
+import { MutationCreateUserArgs, MutationCreateUsersInfoArgs } from '@/gql/graphql';
 import {
   Box,
   Flex,
@@ -16,7 +16,8 @@ import {
   useToast} from '@chakra-ui/react';
 import { StepDescription, StepTitle } from '@chakra-ui/stepper';
 import { signIn } from 'next-auth/react';
-import { FC } from 'react';
+import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
 import { useMutation } from 'urql';
 
 const steps = [
@@ -25,89 +26,105 @@ const steps = [
 ];
 
 const CREATE_USER = graphql(`
-  mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
-    createUser(email: $email, firstName: $firstName, lastName: $lastName, password: $password, username: $email) {
+  mutation CreateUser(
+    $firstName: String!, 
+    $lastName: String!, 
+    $email: String!,
+    $username: String!, 
+    $password: String!,
+    $age: Int!, 
+    $dailyCalories: Int!, 
+    $gender: String!, 
+    $goalWeight: Float!,
+    $height: Int!,
+    $weight: Float!) {
+      createUserAndInfo(
+        age: $age
+        dailyCalories: $dailyCalories
+        email: $email
+        firstName: $firstName
+        gender: $gender
+        goalWeight: $goalWeight
+        height: $height
+        lastName: $lastName
+        password: $password
+        username: $username
+        weight: $weight
+    ) {
       user {
         email
         firstName
         lastName
         username
       }
+      usersInfo {
+        age
+        dailyCalories
+        gender
+        goalWeight
+        height
+        weight
+      }
     }
   }
 `);
 
-// const CREATE_USER_DETAILS = graphql(`
-//   mutation CreateUserDetails($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
-//     createUser(email: $email, firstName: $firstName, lastName: $lastName, password: $password, username: $email) {
-//       user {
-//       info {
-//         age
-//         height
-//         weight
-//       }
-//     }
-//   }
-// }
-// `);
-
 export const NewUser: FC = () => {
   const [ , createUser] = useMutation(CREATE_USER);
+  const router = useRouter();
   const toast = useToast();
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length
   });
-  const newUser = {
-    email: '',
-    password: ''
-  };
-
-  const handleAddUser = async (
+  const [newUser, setNewUser] = useState(
+    {
+      username: '',
+      password: '',
+      firstName: '',
+      lastName: ''
+    });
+  const handleAddUser = (
     {
       firstName,
       lastName,
       email,
       password
-    }: MutationCreateUserArgs): Promise<any> => {
+    }: MutationCreateUserArgs): void => {
     // Execute the mutation
-    const response = await createUser(
+    setNewUser(
       {
-        //gql mutation name: form value
+        username: email,
+        password: password,
         firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password
+        lastName: lastName
       });
-
-    if (response.error) {
-      // Handle the error
-      console.error('Error: ', response.error);
-      toast({
-        title: 'Error',
-        description: 'Something Went Wrong',
-        status: 'error',
-        duration: 9000,
-        isClosable: true
-      });
-    } else {
-      setActiveStep(1);
-    }
+    setActiveStep(1);
   };
 
   const handleUserDetails = async (
     {
-      gender,
       age,
+      dailyCalories,
+      gender,
+      goalWeight,
       height,
       weight
-    }: UserDetailProps): Promise<any> => {
+    }: MutationCreateUsersInfoArgs): Promise<any> => {
+    console.log('here');
     // Execute the mutation
-    const response = await createUserDetails(
+    const response = await createUser(
       {
         //gql mutation name: form value
-        gender: gender,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.username,
+        password: newUser.password,
+        username: newUser.username,
         age: age,
+        dailyCalories: dailyCalories,
+        gender: gender,
+        goalWeight: goalWeight,
         height: height,
         weight: weight
       });
@@ -124,10 +141,11 @@ export const NewUser: FC = () => {
       });
     } else {
       await signIn('credentials', {
-        email: newUser.email,
+        email: newUser.username,
         password: newUser.password,
         redirect: false
       });
+      router.push('/');
     }
   };
 

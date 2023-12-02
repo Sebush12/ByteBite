@@ -1,4 +1,5 @@
 import { Box,
+  Button,
   Flex,
   FormControl,
   FormLabel,
@@ -14,8 +15,10 @@ import { FC, ReactElement } from 'react';
 
 interface UserDetailProps {
   handleUserDetails: (userData: {
-    gender: string;
     age: number;
+    dailyCalories: number;
+    gender: string;
+    goalWeight: number;
     height: number;
     weight: number;}) => void;
 }
@@ -23,8 +26,6 @@ interface UserDetailProps {
 
 
 export const UserDetails: FC<UserDetailProps> = ({handleUserDetails}) => {
-  //const [ , createUserDetails] = useMutation(CREATE_USER_DETAILS);
-
   return (
     <Flex align={'center'} justify={'center'}>
       <Stack spacing={8} mx={'auto'} py={12} px={6}>
@@ -37,12 +38,15 @@ export const UserDetails: FC<UserDetailProps> = ({handleUserDetails}) => {
           boxShadow={'lg'}
           p={8}>
           <Formik initialValues={{
-            gender: '',
             age: 0,
+            dailyCalories: 0,
+            gender: '',
+            goalWeight: 0,
             height: 0,
             weight: 0
           }}
-          onSubmit={async (values): Promise<any> => handleUserDetails(values)}
+          onSubmit={async (values): Promise<any> => {
+            handleUserDetails(values);}}
           >
             {({handleSubmit}): ReactElement => (
               <form onSubmit={handleSubmit}>
@@ -73,6 +77,7 @@ export const UserDetails: FC<UserDetailProps> = ({handleUserDetails}) => {
                           as={Input}
                           id='age'
                           name='age'
+                          type='number'
                         >
                         </Field>
                       </FormControl>
@@ -81,11 +86,12 @@ export const UserDetails: FC<UserDetailProps> = ({handleUserDetails}) => {
                   <HStack spacing={6}>
                     <Box>
                       <FormControl isRequired>
-                        <FormLabel htmlFor='weight'>Weight</FormLabel>
+                        <FormLabel htmlFor='weight'>Current Weight</FormLabel>
                         <Field
                           as={Input}
                           id='weight'
                           name='weight'
+                          type='number'
                         >
                         </Field>
                       </FormControl>
@@ -97,11 +103,49 @@ export const UserDetails: FC<UserDetailProps> = ({handleUserDetails}) => {
                           as={Input}
                           id='height'
                           name='height'
+                          type='number'
                         >
                         </Field>
                       </FormControl>
                     </Box>
                   </HStack>
+                  <HStack spacing={6}>
+                    <Box>
+                      <FormControl isRequired>
+                        <FormLabel htmlFor='dailyCalories'>Daily Calorie Goal</FormLabel>
+                        <Field
+                          as={Input}
+                          id='dailyCalories'
+                          name='dailyCalories'
+                          type='number'
+                        >
+                        </Field>
+                      </FormControl>
+                    </Box>
+                    <Box>
+                      <FormControl isRequired>
+                        <FormLabel htmlFor='goalWeight'>Goal Weight</FormLabel>
+                        <Field
+                          as={Input}
+                          id='goalWeight'
+                          name='goalWeight'
+                          type='number'
+                        >
+                        </Field>
+                      </FormControl>
+                    </Box>
+                  </HStack>
+                </Stack>
+                <Stack pt={6}>
+                  <Button
+                    size="lg"
+                    bg={'blue.400'}
+                    color={'white'}
+                    _hover={{bg: 'blue.500'}}
+                    type='submit'
+                  >
+                      Continue
+                  </Button>
                 </Stack>
               </form>
             )}

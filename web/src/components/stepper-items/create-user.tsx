@@ -163,7 +163,7 @@ export const AddUser: FC<AddUserProps> = ({ handleAddUser }) => {
                       _hover={{bg: 'blue.500'}}
                       type='submit'
                     >
-                Continue
+                      Continue
                     </Button>
                   </Stack>
                   <Stack pt={6}>
