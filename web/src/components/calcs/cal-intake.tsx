@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Center,
@@ -16,6 +18,9 @@ import {
 import { Field, Formik } from "formik";
 import { FC, ReactElement, useState } from "react";
 
+interface CalorieCalcProps {
+  setBmr: Function;
+}
 interface CalorieProps {
   weight: number;
   height: number;
@@ -23,9 +28,9 @@ interface CalorieProps {
   gender: string;
 }
 
-export const CalorieCalc: FC = () => {
-  const [bmr, setBmr] = useState<number | null>(null);
-
+export const CalorieCalc: FC<CalorieCalcProps> = ({ setBmr }) => {
+  const [localBmr, setLocalBmr] = useState(0);
+  const [showBmr, setShowBmr] = useState(false);
   const handleSubmit = ({
     weight,
     height,
@@ -43,7 +48,9 @@ export const CalorieCalc: FC = () => {
       bmrValue = 655.1 + 9.563 * weightInKg + 1.85 * heightInCm - 4.676 * age;
     }
 
+    setLocalBmr(bmrValue);
     setBmr(bmrValue);
+    setShowBmr(true);
   };
 
   return (
@@ -77,9 +84,15 @@ export const CalorieCalc: FC = () => {
           >
             {({ handleSubmit }): ReactElement => (
               <form onSubmit={handleSubmit}>
+                <Alert status="info">
+                  <AlertIcon />
+                  Please put in your goal weight for these calculations
+                </Alert>
                 <Stack spacing={4}>
                   <FormControl isRequired>
-                    <FormLabel htmlFor="weight">Weight (lbs)</FormLabel>
+                    <FormLabel paddingTop="10px" htmlFor="weight">
+                      Weight (lbs)
+                    </FormLabel>
                     <Field as={Input} type="text" id="weight" name="weight" />
                   </FormControl>
                   <FormControl isRequired>
@@ -112,10 +125,10 @@ export const CalorieCalc: FC = () => {
               </form>
             )}
           </Formik>
-          {bmr && (
+          {showBmr && (
             <Center pt={10} flexDirection="column" alignItems="center">
               <Text as={Heading} size="md" mb={2}>
-                Your BMR: {bmr.toFixed(2)}
+                Your BMR: {localBmr.toFixed(2)}
               </Text>
               <Box textAlign="center">
                 <Text fontSize="sm" color="gray.500">

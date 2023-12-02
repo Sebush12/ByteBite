@@ -20,10 +20,10 @@ import {
 
 import email from "next-auth/providers/email";
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
 
 export const AccountSettings = () => {
-  const displayName = "User's display name";
-  const email = "user@example.com";
+  const { data, status } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: passwordModalOpen,
@@ -40,11 +40,19 @@ export const AccountSettings = () => {
           <SimpleGrid columns={2} spacing={4}>
             <Box>
               <Text as="b">Display Name</Text>
-              <Input value={displayName} isReadOnly={true} variant="outline" />
+              <Input
+                value={data?.user?.name || ""}
+                isReadOnly={true}
+                variant="outline"
+              />
             </Box>
             <Box>
               <Text as="b">Email</Text>
-              <Input value={email} isReadOnly={true} variant="outline" />
+              <Input
+                value={data?.user?.email || ""}
+                isReadOnly={true}
+                variant="outline"
+              />
             </Box>
             <Box>
               <Button variant="outline" onClick={openPasswordModal}>

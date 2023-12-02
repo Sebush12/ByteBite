@@ -1,5 +1,5 @@
 import { Flex, Stack } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 
 import { CalorieCalc } from "@/components/calcs/cal-intake";
 import { TdeeCalc } from "@/components/calcs/tdee-calc";
@@ -9,6 +9,7 @@ import LoginReq from "@/components/forms/login-required";
 
 const CalorieIntakeCalculator: React.FC = () => {
   const { status } = useSession();
+  const [bmr, setBmr] = useState<number>();
   if (status == "unauthenticated") {
     return <LoginReq />;
   }
@@ -23,8 +24,8 @@ const CalorieIntakeCalculator: React.FC = () => {
           align="center"
         >
           <BmiCalc />
-          <CalorieCalc />
-          <TdeeCalc />
+          <CalorieCalc setBmr={setBmr} />
+          <TdeeCalc bmr={bmr || 0} />
         </Stack>
       </Flex>
     </Flex>

@@ -17,12 +17,15 @@ import {
 import { Field, Formik } from "formik";
 import { CalorieCalc } from "@/components/calcs/cal-intake";
 
+interface TdeeCalcProps {
+  bmr: number;
+}
 interface TdeeProps {
   bmr: number;
   activityFactor: number;
 }
 
-export const TdeeCalc: FC = () => {
+export const TdeeCalc: FC<TdeeCalcProps> = ({ bmr }) => {
   const [tdee, setTdee] = useState<number | null>(null);
 
   const calculateTdee = ({ bmr, activityFactor }: TdeeProps): void => {
@@ -44,12 +47,13 @@ export const TdeeCalc: FC = () => {
         >
           <Formik
             initialValues={{
-              bmr: 0,
+              bmr: bmr,
               activityFactor: 1.2, // Default to Sedentary
             }}
             onSubmit={(values): void => {
+              console.log(values);
               const variables = {
-                bmr: values.bmr ?? 0,
+                bmr: values.bmr > 0 ? values.bmr : bmr,
                 activityFactor: values.activityFactor ?? 1.2,
               };
               calculateTdee(variables);
@@ -60,7 +64,14 @@ export const TdeeCalc: FC = () => {
                 <Stack spacing={4}>
                   <FormControl isRequired>
                     <FormLabel htmlFor="bmr">BMR</FormLabel>
-                    <Field as={Input} type="number" id="bmr" name="bmr" />
+                    <Field
+                      as={Input}
+                      disabled
+                      type="number"
+                      id="bmr"
+                      name="bmr"
+                      value={bmr.toFixed(2)}
+                    />
                   </FormControl>
                   <FormControl isRequired>
                     <FormLabel htmlFor="activityFactor">
@@ -96,7 +107,7 @@ export const TdeeCalc: FC = () => {
           {tdee && (
             <Center pt={10} flexDirection="column" alignItems="center">
               <Text as={Heading} size="md" mb={2}>
-                Your BMR: {tdee.toFixed(2)}
+                Your TDEE: {tdee.toFixed(2)}
               </Text>
               <Box textAlign="center">
                 <Text fontSize="sm" color="gray.500">
