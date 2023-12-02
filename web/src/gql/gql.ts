@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation CreateFoodItem(\n    $calories: Int!\n    $carbs: Decimal!\n    $fat: Decimal!\n    $name: String!\n    $protein: Decimal!\n  ) {\n    createFoodItem(\n      calories: $calories\n      carbs: $carbs\n      fat: $fat\n      name: $name\n      protein: $protein\n    ) {\n      foodItem {\n        calories\n        carbs\n        fat\n        name\n        protein\n      }\n    }\n  }\n": types.CreateFoodItemDocument,
+    "\n  mutation ChangePassword(\n    $email: String!\n    $newPassword: String!\n    $oldPassword: String!    \n  ) {\n    changePassword(\n      email: $email,\n      newPassword: $newPassword,\n      oldPassword: $oldPassword\n    ) {\n      user {\n        id\n        email\n        firstName\n      }\n    }\n  }\n": types.ChangePasswordDocument,
     "\n  mutation CreateUser($firstName: String!, $lastName: String!, $email: String!, $password: String!) {\n    createUser(email: $email, firstName: $firstName, lastName: $lastName, password: $password, username: $email) {\n      user {\n        email\n        firstName\n        lastName\n        username\n      }\n    }\n  }\n": types.CreateUserDocument,
 };
 
@@ -35,6 +36,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateFoodItem(\n    $calories: Int!\n    $carbs: Decimal!\n    $fat: Decimal!\n    $name: String!\n    $protein: Decimal!\n  ) {\n    createFoodItem(\n      calories: $calories\n      carbs: $carbs\n      fat: $fat\n      name: $name\n      protein: $protein\n    ) {\n      foodItem {\n        calories\n        carbs\n        fat\n        name\n        protein\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateFoodItem(\n    $calories: Int!\n    $carbs: Decimal!\n    $fat: Decimal!\n    $name: String!\n    $protein: Decimal!\n  ) {\n    createFoodItem(\n      calories: $calories\n      carbs: $carbs\n      fat: $fat\n      name: $name\n      protein: $protein\n    ) {\n      foodItem {\n        calories\n        carbs\n        fat\n        name\n        protein\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation ChangePassword(\n    $email: String!\n    $newPassword: String!\n    $oldPassword: String!    \n  ) {\n    changePassword(\n      email: $email,\n      newPassword: $newPassword,\n      oldPassword: $oldPassword\n    ) {\n      user {\n        id\n        email\n        firstName\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ChangePassword(\n    $email: String!\n    $newPassword: String!\n    $oldPassword: String!    \n  ) {\n    changePassword(\n      email: $email,\n      newPassword: $newPassword,\n      oldPassword: $oldPassword\n    ) {\n      user {\n        id\n        email\n        firstName\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
