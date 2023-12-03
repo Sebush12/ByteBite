@@ -6,9 +6,9 @@ import {
   Center,
   CircularProgress,
   CircularProgressLabel,
-  Heading,
-} from "@chakra-ui/react";
-import { FC } from "react";
+  Heading
+} from '@chakra-ui/react';
+import { FC } from 'react';
 
 export interface ProgressCardProps {
   title: string;
@@ -21,7 +21,7 @@ export const ProgessCard: FC<ProgressCardProps> = ({
   title,
   value,
   goal,
-  color,
+  color
 }) => {
   return (
     <Center>
@@ -36,13 +36,13 @@ export const ProgessCard: FC<ProgressCardProps> = ({
         </CardBody>
         <CardFooter>
           <CircularProgress
-            value={(value / goal) * 100}
+            value={value / goal * 100}
             color={color}
             size="5em"
             thickness="4px"
           >
             <CircularProgressLabel>
-              {value}%<br />
+              {value/goal *100}%<br />
             </CircularProgressLabel>
           </CircularProgress>
         </CardFooter>
