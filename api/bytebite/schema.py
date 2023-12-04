@@ -113,12 +113,12 @@ class UpdateUsersInfo(graphene.Mutation):
 
     class Arguments:
         email = graphene.String(required=True)
-        height = graphene.Int(required=True)
-        age = graphene.Int(required=True)
-        weight = graphene.Float(required=True)
-        goal_weight = graphene.Float(required=True)
-        daily_calories = graphene.Int(required=True)
-        gender = graphene.String(required=True)
+        height = graphene.Int(required=False)
+        age = graphene.Int(required=False)
+        weight = graphene.Float(required=False)
+        goal_weight = graphene.Float(required=False)
+        daily_calories = graphene.Int(required=False)
+        gender = graphene.String(required=False)
 
     def mutate(self, info, email, height, age, weight, goal_weight, daily_calories, gender):
         try:
