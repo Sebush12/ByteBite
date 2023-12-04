@@ -126,12 +126,19 @@ class UpdateUsersInfo(graphene.Mutation):
         except Users_info.DoesNotExist:
             raise Exception("User not found.")
 
-        users_info.height = height
-        users_info.age = age
-        users_info.weight = Decimal(str(weight))
-        users_info.goal_weight = Decimal(str(goal_weight))
-        users_info.daily_calories = daily_calories
-        users_info.gender = gender
+        if height is not None:
+            users_info.height = height
+        if age is not None:
+            users_info.age = age
+        if weight is not None:
+            users_info.weight = Decimal(str(weight))
+        if goal_weight is not None:
+            users_info.goal_weight = Decimal(str(goal_weight))
+        if daily_calories is not None:
+            users_info.daily_calories = daily_calories
+        if gender is not None:
+            users_info.gender = gender
+        
         users_info.save()
 
         return UpdateUsersInfo(users_info=users_info)
