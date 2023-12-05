@@ -36,8 +36,7 @@ export const Navbar: FC = () => {
   } = useDisclosure();
 
   const handleLogout = async () => {
-    await signOut();
-    router.push("/");
+    await signOut({ callbackUrl: "/" });
   };
 
   useEffect(() => {
@@ -93,7 +92,11 @@ export const Navbar: FC = () => {
                 <MenuList>
                   {status === "authenticated" ? (
                     <>
-                      <Heading size={"md"} textAlign={"center"}>
+                      <Heading
+                        size={"md"}
+                        textAlign={"center"}
+                        paddingBottom={"10px"}
+                      >
                         {data.user?.name}
                       </Heading>
                       <hr />
@@ -115,11 +118,18 @@ export const Navbar: FC = () => {
                     </>
                   ) : (
                     <>
-                      <MenuItem pl={"20px"} onClick={openLoginModal}>
+                      <MenuItem
+                        pl={"20px"}
+                        pb="10px"
+                        pt="10px"
+                        onClick={openLoginModal}
+                      >
                         Login
                       </MenuItem>
                       <MenuItem
                         pl={"20px"}
+                        pb="10px"
+                        pt="10px"
                         onClick={(): Promise<boolean> =>
                           router.push("/new-user")
                         }

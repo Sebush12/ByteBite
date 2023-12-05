@@ -1,4 +1,5 @@
-import EditableControls from "@/pages/shared/edit-textbox";
+import { graphql } from "@/gql";
+
 import {
   Card,
   CardHeader,
@@ -7,46 +8,126 @@ import {
   SimpleGrid,
   Select,
   Input,
-  Editable,
-  EditablePreview,
-  EditableInput,
   CardFooter,
   Box,
   Text,
   Button,
 } from "@chakra-ui/react";
-import { FormikHelpers, useFormik } from "formik";
+import { useFormik } from "formik";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { gql, useMutation, useQuery } from "urql";
+import { useSession } from "next-auth/react";
+
+const UPDATE_SETTINGS = graphql(`
+  mutation UpdateUserSettings(
+    $email: String!
+    $age: Int!
+    $dailyCalories: Int!
+    $gender: String!
+    $goalWeight: Float!
+    $height: Int!
+    $weight: Float!
+  ) {
+    updateUsersInfo(
+      email: $email
+      age: $age
+      dailyCalories: $dailyCalories
+      gender: $gender
+      goalWeight: $goalWeight
+      height: $height
+      weight: $weight
+    ) {
+      usersInfo {
+        age
+        dailyCalories
+        gender
+        goalWeight
+        height
+        weight
+      }
+    }
+  }
+`);
+
+const USER_INFO = gql`
+  query UserProfileInfo($email: String!) {
+    userInfoByEmail(email: $email) {
+      age
+      dailyCalories
+      gender
+      goalWeight
+      height
+      weight
+    }
+  }
+`;
 
 export const ProfileSettings = () => {
+  const { data: sessionData } = useSession();
+  const userEmail = sessionData?.user?.email;
+
+  const [loading, setLoading] = useState(false);
+
+  const [{ data, fetching }] = useQuery({
+    query: USER_INFO,
+    variables: { email: userEmail },
+    pause: !userEmail,
+  });
   const [editMode, setEditMode] = useState(false);
-  const caloricGoal = "userCaloricGoal";
-  const displayUserWeight = "Your Weight";
-  const handleCreate = async (
-    values: any,
-    { resetForm }: FormikHelpers<any>
-  ) => {
+  const [, updateSettings] = useMutation(UPDATE_SETTINGS);
+
+  useEffect(() => {
+    if (userEmail) {
+      setLoading(true);
+
+      if (!fetching) {
+        setLoading(false);
+      }
+    }
+  }, [userEmail, data, fetching]);
+
+  const handleCreate = async ({
+    age,
+    goalWeight,
+    gender,
+    weight,
+    height,
+    dailyCalories,
+  }: any): Promise<void> => {
+    // Define the variables for your mutation
+    const variables = {
+      email: userEmail ?? "",
+      age,
+      dailyCalories,
+      gender,
+      goalWeight,
+      height,
+      weight,
+    };
     setEditMode(false);
+
+    // Execute the mutation
+    const response = await updateSettings(variables);
+    if (response.error) {
+      console.error(response.error);
+    } else {
+      console.log("Success");
+    }
   };
 
   const formik = useFormik({
     initialValues: {
-      gender: "",
-      weight: "",
-      goal_weight: "",
-      height: "",
-      age: "",
+      dailyCalories: data?.userInfoByEmail?.dailyCalories || 0,
+      gender: data?.userInfoByEmail?.gender || "",
+      weight: data?.userInfoByEmail?.weight || 0,
+      goalWeight: parseInt(data?.userInfoByEmail?.goalWeight) || 0,
+      height: data?.userInfoByEmail?.height || 0,
+      age: data?.userInfoByEmail?.age || 0,
     },
-    onSubmit: (values, formikBag) => {
-      const parsedVals = {
-        ...values,
-        weight: parseInt(values.weight),
-        goal_weight: parseInt(values.goal_weight),
-        height: parseInt(values.height),
-        age: parseInt(values.age),
-      };
-      handleCreate(parsedVals, formikBag);
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      handleCreate(values);
     },
   });
 
@@ -56,85 +137,90 @@ export const ProfileSettings = () => {
         <Heading size="md">Profile Settings</Heading>
       </CardHeader>
       <CardBody>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            formik.handleSubmit();
-          }}
-          id="profile-settings-form"
-        >
+        <form onSubmit={formik.handleSubmit} id="profile-settings-form">
           <SimpleGrid columns={2} spacing={4}>
-            <Box>
-              <Text as="b">Gender</Text>
-              <Select
-                id="gender"
-                name="gender"
-                isDisabled={!editMode}
-                value={formik.values.gender}
-                onChange={formik.handleChange}
-                placeholder="Select option"
-                size="sm"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </Select>
-            </Box>
-            <Box>
-              <Text as="b">Caloric Goal</Text>
-              <Input value={caloricGoal} isReadOnly={true} variant="outline" />
-            </Box>
-            <Box>
-              <Text as="b">Weight (lbs)</Text>
+            <>
+              <Box>
+                <Text as="b">Gender</Text>
+                <Select
+                  id="gender"
+                  name="gender"
+                  isDisabled={!editMode}
+                  value={formik.values.gender}
+                  onChange={formik.handleChange}
+                  placeholder="Select option"
+                  size="sm"
+                >
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                </Select>
+              </Box>
+              <Box>
+                <Text as="b">Caloric Goal</Text>
+                <Input
+                  type="number"
+                  onChange={formik.handleChange}
+                  value={formik.values.dailyCalories}
+                  variant="outline"
+                  id="dailyCalories"
+                  name="dailyCalories"
+                  placeholder="Calorie Goal"
+                  isDisabled={!editMode}
+                />
+              </Box>
+              <Box>
+                <Text as="b">Weight (lbs)</Text>
 
-              <Input
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.weight}
-                id="weight"
-                name="weight"
-                placeholder="Your Weight"
-                isDisabled={!editMode}
-              />
-            </Box>
-            <Box>
-              <Text as="b">Weight Goal (lbs)</Text>
+                <Input
+                  type="number"
+                  onChange={formik.handleChange}
+                  value={formik.values.weight}
+                  id="weight"
+                  name="weight"
+                  placeholder="Your Weight"
+                  isDisabled={!editMode}
+                />
+              </Box>
+              <Box>
+                <Text as="b">Weight Goal (lbs)</Text>
 
-              <Input
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.goal_weight}
-                id="goal_weight"
-                name="goal_weight"
-                placeholder="Your Weight Goal"
-                isDisabled={!editMode}
-              />
-            </Box>
-            <Box>
-              <Text as="b">Height(In)</Text>
+                <Input
+                  type="number"
+                  onChange={formik.handleChange}
+                  value={formik.values.goalWeight}
+                  id="goalWeight"
+                  name="goalWeight"
+                  placeholder="Your Weight Goal"
+                  isDisabled={!editMode}
+                />
+              </Box>
+              <Box>
+                <Text as="b">Height (In)</Text>
 
-              <Input
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.height}
-                id="height"
-                name="height"
-                placeholder="Your Height"
-                isDisabled={!editMode}
-              />
-            </Box>
-            <Box>
-              <Text as="b">Age</Text>
+                <Input
+                  type="number"
+                  onChange={formik.handleChange}
+                  value={formik.values.height}
+                  id="height"
+                  name="height"
+                  placeholder="Your Height"
+                  isDisabled={!editMode}
+                />
+              </Box>
+              <Box>
+                <Text as="b">Age</Text>
 
-              <Input
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.age}
-                id="age"
-                name="age"
-                placeholder="Age"
-                isDisabled={!editMode}
-              />
-            </Box>
+                <Input
+                  type="number"
+                  onChange={formik.handleChange}
+                  value={formik.values.age}
+                  id="age"
+                  name="age"
+                  placeholder="Age"
+                  isDisabled={!editMode}
+                />
+              </Box>
+            </>
           </SimpleGrid>
         </form>
       </CardBody>
@@ -147,7 +233,7 @@ export const ProfileSettings = () => {
         ) : (
           <Button
             type="button"
-            onClick={(e) => {
+            onClick={(e): void => {
               e.preventDefault();
               setEditMode(true);
             }}

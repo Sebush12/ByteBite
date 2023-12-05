@@ -12,21 +12,6 @@ import { graphql } from '@/gql';
 import { gql, useQuery } from 'urql';
 import { useSession } from 'next-auth/react';
 
-const USER_INFO = graphql(`
-query UserInfo(email: String!) 
-{
-  userInfoByEmail(email: $email) 
-  {
-    age
-    dailyCalories
-    gender
-    goalWeight
-    height
-    weight
-  }
-}
-`);
-
 export const Dashboard: FC = () => {
   const USER_INFO = gql`
     query UserInfo($email: String!) {

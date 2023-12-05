@@ -86,7 +86,7 @@ export const CalorieCalc: FC<CalorieCalcProps> = ({ setBmr }) => {
               <form onSubmit={handleSubmit}>
                 <Alert status="info">
                   <AlertIcon />
-                  Please put in your goal weight for these calculations
+                  Please put in your goal weight for this calculation
                 </Alert>
                 <Stack spacing={4}>
                   <FormControl isRequired>

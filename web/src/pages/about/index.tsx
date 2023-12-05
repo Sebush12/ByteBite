@@ -4,7 +4,7 @@ import { PicCard } from "@/components/ui/pictureCard";
 
 const AboutUs: FC = () => {
   return (
-    <Flex direction="column" minH="100vh" position="relative">
+    <Flex direction="column" minH="90vh" position="relative">
       <VStack align="center" spacing={8} py={8}>
         <Heading as="h1" data-testid="about-heading">
           About Us
