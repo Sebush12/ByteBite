@@ -3,7 +3,7 @@ from django import forms
 from graphene_django.forms import mutation
 from graphene_django import DjangoObjectType, DjangoListField
 from .forms import UserForm, UserUpdateForm
-from .models import User, Users_info, FoodItem, UserFoodLog, Exercise
+from .models import User, Users_info, FoodItem, UserFoodLog, Exercise, calculate_total_macros
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 from .types import UsersInfoType, ExerciseType
@@ -218,6 +218,45 @@ class FoodItemMutation(graphene.Mutation):
         food_item.save()
         return FoodItemMutation(food_item=food_item)
 
+class UserFoodLogType(DjangoObjectType):
+    class Meta:
+        model = UserFoodLog
+        fields = ("id", "user", "date", "food_item", "servings")
+
+    id = graphene.ID()
+
+    def resolve_id(self, info):
+        return self.id  
+
+class UserFoodLogSummaryType(graphene.ObjectType):
+    total_calories = graphene.Float()
+    total_protein = graphene.Float()
+    total_carbohydrates = graphene.Float()
+    total_fat = graphene.Float()
+
+class CreateUserFoodLog(graphene.Mutation):
+    user_food_log = graphene.Field(UserFoodLogType)
+
+    class Arguments:
+        user_id = graphene.ID(required=True)
+        date = graphene.Date(required=True)
+        food_item_name = graphene.String(required=True)
+        servings = graphene.Int(required=True)
+
+    def mutate(self, info, user_id, date, food_item_name, servings):
+        user_profile = Users_info.objects.get(user_id=user_id)
+        food_item = FoodItem.objects.get(name=food_item_name)
+
+        user_food_log = UserFoodLog.objects.create(
+            user=user_profile,
+            date=date,
+            food_item=food_item,
+            servings=servings
+        )
+
+        return CreateUserFoodLog(user_food_log=user_food_log)
+
+
 class CreateExercise(graphene.Mutation):
     exercise = graphene.Field(ExerciseType)
 
@@ -248,26 +287,13 @@ class Mutation(graphene.ObjectType):
     update_users_info = UpdateUsersInfo.Field()
     create_user_and_info = CreateUserAndInfo.Field()
     create_exercise = CreateExercise.Field()
+    create_user_food_log = CreateUserFoodLog.Field()
 
 
 class FoodItemType(DjangoObjectType):
     class Meta:
         model = FoodItem
         fields = ("name", "calories", "protein", "carbs", "fat")
-
-class UserFoodLogType(DjangoObjectType):
-    class Meta:
-        model = UserFoodLog
-        fields = ("user", "date", "food_item", "servings")
-
-class UserFoodLogSummaryType(graphene.ObjectType):
-    user_profile = graphene.Field(UsersInfoType)
-    date = graphene.Date()
-    user_food_logs = graphene.List(UserFoodLogType)
-    total_calories = graphene.Int()
-    total_protein = graphene.Int()
-    total_carbohydrates = graphene.Int()
-    total_fat = graphene.Int()
 
 class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
@@ -329,29 +355,15 @@ class Query(graphene.ObjectType):
             return None
 
     def resolve_user_food_log_summary(self, info, user_id, date):
-        # Retrieve the user's profile
         user_profile = Users_info.objects.get(user_id=user_id)
-
-        # Query all food items logged by the user for the specified date
         user_food_logs = UserFoodLog.objects.filter(user=user_profile, date=date)
+        total_calories, total_protein, total_carbohydrates, total_fat = calculate_total_macros(user_food_logs)
 
-        # Calculate the total macros intake for the day
-        total_calories = user_food_logs.aggregate(total_calories=Sum('food_item__calories'))['total_calories']
-        total_protein = user_food_logs.aggregate(total_protein=Sum('food_item__protein'))['total_protein']
-        total_carbohydrates = user_food_logs.aggregate(total_carbohydrates=Sum('food_item__carbs'))['total_carbohydrates']
-        total_fat = user_food_logs.aggregate(total_fat=Sum('food_item__fat'))['total_fat']
-
-        # Create a dictionary with the summary data
-        summary_data = {
-            'user_profile': user_profile,
-            'date': date,
-            'user_food_logs': user_food_logs,
-            'total_calories': total_calories,
-            'total_protein': total_protein,
-            'total_carbohydrates': total_carbohydrates,
-            'total_fat': total_fat,
-        }
-
-        return summary_data
+        return UserFoodLogSummaryType(
+            total_calories=total_calories,
+            total_protein=total_protein,
+            total_carbohydrates=total_carbohydrates,
+            total_fat=total_fat,
+        )
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
