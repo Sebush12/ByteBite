@@ -8,6 +8,7 @@ from graphene_django.types import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 from .types import UsersInfoType, ExerciseType
 from decimal import Decimal
+from django.db.models import Sum
 
 
 class UserType(DjangoObjectType):
@@ -259,6 +260,15 @@ class UserFoodLogType(DjangoObjectType):
         model = UserFoodLog
         fields = ("user", "date", "food_item", "servings")
 
+class UserFoodLogSummaryType(graphene.ObjectType):
+    user_profile = graphene.Field(UsersInfoType)
+    date = graphene.Date()
+    user_food_logs = graphene.List(UserFoodLogType)
+    total_calories = graphene.Int()
+    total_protein = graphene.Int()
+    total_carbohydrates = graphene.Int()
+    total_fat = graphene.Int()
+
 class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     all_users_info = graphene.List(UsersInfoType)
@@ -269,6 +279,11 @@ class Query(graphene.ObjectType):
         UsersInfoType, 
         id=graphene.ID(),  # Allow querying by ID
         email=graphene.String(),  # Allow querying by email
+    )
+    user_food_log_summary = graphene.Field(
+        UserFoodLogSummaryType,
+        user_id=graphene.ID(required=True),
+        date=graphene.Date(required=True),
     )
 
     def resolve_all_users(root, info):
@@ -312,5 +327,31 @@ class Query(graphene.ObjectType):
             return user_info
         except UsersInfo.DoesNotExist:
             return None
+
+    def resolve_user_food_log_summary(self, info, user_id, date):
+        # Retrieve the user's profile
+        user_profile = Users_info.objects.get(user_id=user_id)
+
+        # Query all food items logged by the user for the specified date
+        user_food_logs = UserFoodLog.objects.filter(user=user_profile, date=date)
+
+        # Calculate the total macros intake for the day
+        total_calories = user_food_logs.aggregate(total_calories=Sum('food_item__calories'))['total_calories']
+        total_protein = user_food_logs.aggregate(total_protein=Sum('food_item__protein'))['total_protein']
+        total_carbohydrates = user_food_logs.aggregate(total_carbohydrates=Sum('food_item__carbs'))['total_carbohydrates']
+        total_fat = user_food_logs.aggregate(total_fat=Sum('food_item__fat'))['total_fat']
+
+        # Create a dictionary with the summary data
+        summary_data = {
+            'user_profile': user_profile,
+            'date': date,
+            'user_food_logs': user_food_logs,
+            'total_calories': total_calories,
+            'total_protein': total_protein,
+            'total_carbohydrates': total_carbohydrates,
+            'total_fat': total_fat,
+        }
+
+        return summary_data
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
