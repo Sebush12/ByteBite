@@ -263,6 +263,13 @@ class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     all_users_info = graphene.List(UsersInfoType)
     user_by_id = graphene.Field(UserType, id=graphene.ID(required=True))
+    all_food_items = graphene.List(FoodItemType)
+    users_info = graphene.Field(UsersInfoType)
+    user_info_by_email = graphene.Field(
+        UsersInfoType, 
+        id=graphene.ID(),  # Allow querying by ID
+        email=graphene.String(),  # Allow querying by email
+    )
 
     def resolve_all_users(root, info):
         return User.objects.all()
@@ -274,8 +281,9 @@ class Query(graphene.ObjectType):
         # Implement the logic to retrieve a user by ID from the database
         return User.objects.get(pk=id)
 
-class QueryUsersInfo(graphene.ObjectType):
-    users_info = graphene.Field(UsersInfoType)
+    def resolve_all_food_items(self, info):
+        # Query and return all food items from your database
+        return FoodItem.objects.all()
 
     def resolve_users_info(self, info):
         user = info.context.user
@@ -288,13 +296,6 @@ class QueryUsersInfo(graphene.ObjectType):
         except Users_info.DoesNotExist:
             print("User info not found.")
             return None
-
-class Query(graphene.ObjectType):
-    user_info_by_email = graphene.Field(
-        UsersInfoType, 
-        id=graphene.ID(),  # Allow querying by ID
-        email=graphene.String(),  # Allow querying by email
-    )
 
     def resolve_user_info_by_email(self, info, id=None, email=None):
         try:
