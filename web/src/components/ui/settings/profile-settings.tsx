@@ -120,7 +120,7 @@ export const ProfileSettings = () => {
     initialValues: {
       dailyCalories: data?.userInfoByEmail?.dailyCalories || 0,
       gender: data?.userInfoByEmail?.gender || "",
-      weight: data?.userInfoByEmail?.weight || 0,
+      weight: parseInt(data?.userInfoByEmail?.weight) || 0,
       goalWeight: parseInt(data?.userInfoByEmail?.goalWeight) || 0,
       height: data?.userInfoByEmail?.height || 0,
       age: data?.userInfoByEmail?.age || 0,

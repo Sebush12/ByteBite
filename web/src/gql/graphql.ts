@@ -170,18 +170,35 @@ export type MutationLoginUserArgs = {
 
 
 export type MutationUpdateUsersInfoArgs = {
-  age: Scalars['Int']['input'];
-  dailyCalories: Scalars['Int']['input'];
+  age?: InputMaybe<Scalars['Int']['input']>;
+  dailyCalories?: InputMaybe<Scalars['Int']['input']>;
   email: Scalars['String']['input'];
-  gender: Scalars['String']['input'];
-  goalWeight: Scalars['Float']['input'];
-  height: Scalars['Int']['input'];
-  weight: Scalars['Float']['input'];
+  gender?: InputMaybe<Scalars['String']['input']>;
+  goalWeight?: InputMaybe<Scalars['Float']['input']>;
+  height?: InputMaybe<Scalars['Int']['input']>;
+  weight?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  allFoodItems?: Maybe<Array<Maybe<FoodItemType>>>;
+  allUsers?: Maybe<Array<Maybe<UserType>>>;
+  allUsersInfo?: Maybe<Array<Maybe<UsersInfoType>>>;
+  userById?: Maybe<UserType>;
+  userFoodLogSummary?: Maybe<UserFoodLogSummaryType>;
   userInfoByEmail?: Maybe<UsersInfoType>;
+  usersInfo?: Maybe<UsersInfoType>;
+};
+
+
+export type QueryUserByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryUserFoodLogSummaryArgs = {
+  date: Scalars['Date']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -193,6 +210,17 @@ export type QueryUserInfoByEmailArgs = {
 export type UpdateUsersInfo = {
   __typename?: 'UpdateUsersInfo';
   usersInfo?: Maybe<UsersInfoType>;
+};
+
+export type UserFoodLogSummaryType = {
+  __typename?: 'UserFoodLogSummaryType';
+  date?: Maybe<Scalars['Date']['output']>;
+  totalCalories?: Maybe<Scalars['Int']['output']>;
+  totalCarbohydrates?: Maybe<Scalars['Int']['output']>;
+  totalFat?: Maybe<Scalars['Int']['output']>;
+  totalProtein?: Maybe<Scalars['Int']['output']>;
+  userFoodLogs?: Maybe<Array<Maybe<UserFoodLogType>>>;
+  userProfile?: Maybe<UsersInfoType>;
 };
 
 export type UserFoodLogType = {
