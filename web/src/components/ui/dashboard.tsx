@@ -58,7 +58,7 @@ export const Dashboard: FC = () => {
       if (!fetching) {
         if(data.userInfoByEmail.userfoodlogSet) {
           setTotalCals(data.userInfoByEmail.userfoodlogSet
-            .reduce((total, item) => {return total + item?.foodItem.calories * item.servings;}, 0));
+            .reduce((total: number, item: any) => {return total + item?.foodItem.calories * item.servings;}, 0));
         }
         setLoading(false);
       }
@@ -79,7 +79,7 @@ export const Dashboard: FC = () => {
           <ProgessCard
             title="Daily Calories"
             value={totalCals ?? 0}
-            goal={data?.userInfoByEmail.dailyCalories ?? 0}
+            goal={data?.userInfoByEmail?.dailyCalories ?? 0}
             color="purple.400"
           />
         </Skeleton>
@@ -94,8 +94,8 @@ export const Dashboard: FC = () => {
         <Skeleton startColor='orange.400' endColor='purple.400' p={5} isLoaded={!loading}>
           <ProgessCard
             title="Weight Goal"
-            value={data?.userInfoByEmail.weight ?? 0}
-            goal={data?.userInfoByEmail.goalWeight ?? 0}
+            value={data?.userInfoByEmail?.weight ?? 0}
+            goal={data?.userInfoByEmail?.goalWeight ?? 0}
             color="orange.400"
           />
         </Skeleton>

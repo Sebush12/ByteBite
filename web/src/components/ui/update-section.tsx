@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import AddFoodItem from '@/components/forms/add-food';
+import UpdateWeight from '../forms/update-weight';
+import UpdateCalories from '../forms/update-food';
 
 export const UpdateSect:FC = () => {
   return (
@@ -32,21 +34,21 @@ export const UpdateSect:FC = () => {
               <TabPanel >
                 <HStack>
                   <Spacer />
-                  <Heading textAlign="center" noOfLines={2}>Coming soon...</Heading>
+                  <UpdateCalories />
                   <Spacer />
                   <AddFoodItem />
                   <Spacer />
                 </HStack>
               </TabPanel>
               <TabPanel>
-                <Spacer />
-                <Heading textAlign="center" noOfLines={2}>Coming soon...</Heading>
-                <Spacer />
+                <Spacer pt={20} pb={40} />
+                <Heading textAlign="center" noOfLines={1} pt={4} pb={4}>Coming soon...</Heading>
+                <Spacer pt={40} pb={20} />
               </TabPanel>
               <TabPanel>
-                <Spacer />
-                <Heading textAlign="center" noOfLines={2}>Coming soon...</Heading>
-                <Spacer />
+                <Spacer pt={12} pb={12} />
+                <UpdateWeight />
+                <Spacer pt={10} pb={10} />
               </TabPanel>
             </TabPanels>
           </Tabs>
